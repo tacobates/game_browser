@@ -46,12 +46,15 @@ public class Browser extends JFrame {
 
 	private List<Game> games;
 
+	private Meta meta;
+
 	/********* Methods *********/
 
 	/**
 	* Constructor initializes GUI
 	*/
 	public Browser() {
+		meta = Meta.getInstance();
 		initGUI();
 	}
 
