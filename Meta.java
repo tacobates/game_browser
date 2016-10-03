@@ -7,17 +7,22 @@ public final class Meta {
 	private static Meta instance = null; //Singleton
 
 	/********* Constants *********/
-	public static final String DIR_CONF   = "/conf";
-	public static final String DIR_ICON   = "/img/icon";
-	public static final String DIR_LOG    = "/log";
-	public static final String DIR_SCREEN = "/img/screen";
-	public static final String DIR_USER   = "/user";
+	public static final String SEP         = "/";
+	public static final String DIR_CONF    = "/detail";
+	public static final String DIR_ICON    = "/icon";
+	public static final String DIR_LOG     = "/log";
+	public static final String DIR_SCREEN  = "/screen";
+	public static final String DIR_USER    = "/user";
+	public static final String FILE_ALL    = "/all.tsv";
+	public static final String LOG_ACC     = "/log/access.log";
+	public static final String LOG_ERR     = "/log/error.log";
+	public static final String LOG_INST    = "/log/install.log";
 
 //TODO: get DIRs from user entered data, but assume these (even DIR)
 //TODO: allow for multiple directories to be entered
 
 	/********* Variables *********/
-	private static String dirRoot = "/usr/local/game_browser";
+	private static String dirRoot = "/usr/local/game_meta";
 	private static String dirBash = "/usr/share/games/bash";
 	private static String dirX11  = "/usr/share/games/x11";
 	private static String dirDos  = "/usr/share/games/dos";
@@ -34,12 +39,15 @@ public final class Meta {
 	private static String user    = "no_user";
 
 	/********* Getters *********/ //TODO: !!!
-	public int    getType()        { return 0; }
-	public String getTypeName()    { return "Zero"; }
+	public String getDirRoot()   { return dirRoot; }
+	public String getDirConf()   { return dirRoot + DIR_CONF; }
+	public String getDirIcon()   { return dirRoot + DIR_ICON; }
+	public String getDirLog()    { return dirRoot + DIR_LOG; }
+	public String getDirScreen() { return dirRoot + DIR_SCREEN; }
+	public String getDirUser()   { return dirRoot + DIR_USER; }
 
 	/********* Setters *********/ //TODO: !!!
-	public void setType(int i)           { int type = i; }
-	public void getConf(String s)        { String conf = s; }
+	public void setDirRoot(String s)   { return dirRoot; }
 
 
 	/********* Methods *********/
@@ -67,28 +75,19 @@ System.out.println(toStringStatic());
 	* Reads the config file to populate our member variables
 	*/
 	private static void parseConfig() {
+//TODO: set dirRoot & dir* if config was saved
 		user = System.getProperty("user.name");
+		ez = EZFile.getInstance();
+		all = ez.parseTSV(dirRoot + FILE_ALL, true);
+System.out.println("=========================");
+System.out.println(all);
+System.out.println("=========================");
 return;
 
 //TODO: look for community info, but deal with it if not synced
 
 //TODO: catch IOException
 
-/*
-		//Fetch Config File
-		this.conf = conf;
-		try(BufferedReader br = new BufferedReader(new FileReader(conf))){
-			StringBuilder sb = new StringBuilder();
-			String line = br.readLine();
-			while (line != null) {
-				sb.append(line);
-				sb.append(System.lineSeparator());
-				line = br.readLine();
-			}
-			conf = sb.toString();
-System.out.println(conf);
-		}
-*/
 
 		//Parse Config & Populate Class Variables
 		//TODO
@@ -108,6 +107,24 @@ System.out.println(conf);
 	public static String toStringStatic() {
 		return "User: " + user + "\n" +
 			"";
+	}
+
+	/**
+	* 
+	*/
+	public static String readFile(String path) {
+		//Fetch Config File
+		try(BufferedReader br = new BufferedReader(new FileReader(allFile))){
+			StringBuilder sb = new StringBuilder();
+			String line = br.readLine();
+			while (line != null) {
+				sb.append(line);
+				sb.append(System.lineSeparator());
+				line = br.readLine();
+			}
+			conf = sb.toString();
+System.out.println(conf);
+		}
 	}
 }
 
