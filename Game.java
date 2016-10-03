@@ -20,7 +20,9 @@ public class Game {
 	public static final int TYPE_NX   =   9; //Nintendo NX
 	public static final int TYPE_GB   =  10; //Gameboy
 	public static final int TYPE_GBA  =  11; //Gameboy Advanced
-	public static final int TYPE_PSX  =  12;
+	public static final int TYPE_DS   =  12; //Nintendo DS
+	public static final int TYPE_DS3  =  13; //Nintendo 3-DS
+	public static final int TYPE_PSX  =  14;
 	public static final String[] TYPES = {
 		"Terminal",
 		"X11",
