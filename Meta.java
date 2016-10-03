@@ -8,6 +8,14 @@ public final class Meta {
 	private static Meta instance = null; //Singleton
 
 	/********* Constants *********/
+	public static final int I_SUPPORT      = 0;
+	public static final int I_ID           = 1;
+	public static final int I_TYPE         = 2;
+	public static final int I_RATE         = 3;
+	public static final int I_NUMP         = 4;
+	public static final int I_YEAR         = 5;
+	public static final int I_GENRE        = 6;
+	public static final int I_NAME         = 7;
 	public static final String SEP         = "/";
 	public static final String DIR_CONF    = "/detail";
 	public static final String DIR_ICON    = "/icon";
@@ -23,6 +31,7 @@ public final class Meta {
 //TODO: allow for multiple directories to be entered
 
 	/********* Variables *********/
+	private static ArrayList<Game> all;
 	private static String dirRoot = "/usr/local/game_meta";
 	private static String dirBash = "/usr/share/games/bash";
 	private static String dirX11  = "/usr/share/games/x11";
@@ -82,14 +91,90 @@ System.out.println(toStringStatic());
 		user = System.getProperty("user.name");
 
 		//Get Basic Game Data (everything sortable & filterable)
-//TODO: look for community info, but deal with it if not synced
-		EZFile ez = EZFile.getInstance();
-		ArrayList<String[]> all = ez.readTSV(dirRoot + FILE_ALL, true);
+//EZFile ez = EZFile.getInstance();
+//all = ez.readTSV(dirRoot + FILE_ALL, true);
 //String[] t = all.get(0);
 //System.out.println(t[0] + ", " + t[1] +", "+ t[2] +", "+ t[3] +", "+
 //	t[4] +", "+ t[5] +", "+ t[6] +", "+ t[7]);
+		//TODO: look for community info, but deal with it if not synced
+		all = new ArrayList();
+		boolean skipRow1 = true;
+		String path = dirRoot + FILE_ALL;
+		try(BufferedReader br = new BufferedReader(new FileReader(path))){
+			String line = br.readLine();
+			while (line != null) {
+				if (line.length() > 1 && !skipRow1) { //Skip lines with no data
+					all.add(createGame(line.split("\\t")));
+				}
+				line = br.readLine();
+				skipRow1 = false; //Whether or not it was ever true
+			}
+		} catch (Exception e) {
+		}
 
 		//TODO: use "all" to create sorted sets, but do it after initial load
+	}
+
+	/**
+	* Creates a game from a TSV row that's been split into an array
+	* [0] - (String) Installed 1 or ""
+	* [1] - (int) ID of game
+	* [2] - (String) Type of game (Bash, X11, Nes, DOS, etc...)
+	* [3] - (double) Rating
+	* [4] - (int) max # players
+	* [5] - (int) Year released (may be blank)
+	* [6] - (String) Genre of game (first 4 chars)
+	* [7] - (String) Name of Game 
+	*/
+	public static Game createGame(String[] x) {
+		Game g = null;
+		String type = x[I_TYPE].toLowerCase();
+		switch (type) {
+			case "bash": case "x11":
+				g = new GameX11(); break;
+			case "dos":  g = new GameDos();  break;
+			case "ds3":  g = new GameDS3();  break;
+			case "ds":   g = new GameDS();   break;
+			case "gba":  g = new GameGba();  break;
+			case "gb":   g = new GameGb();   break;
+			case "gc":   g = new GameGC();   break;
+			case "n64":  g = new GameN64();  break;
+			case "nes":  g = new GameNes();  break;
+			case "nx":   g = new GameNX();   break;
+			case "psx":  g = new GamePsx();  break;
+			case "snes": g = new GameSnes(); break;
+			case "wii":  g = new GameWii();  break;
+			case "wu":   g = new GameWU();   break;
+			default:     g = new Game();     break;
+		}
+		g.setName(x[I_NAME]);
+		g.setSupport(0 == "1".compareTo(x[I_SUPPORT]));
+		g.setID(Integer.parseInt(x[I_ID]));
+		g.setNumPlayers(Integer.parseInt(x[I_NUMP]));
+		g.setRating(Double.parseDouble(x[I_RATE]));
+		g.setYear(Integer.parseInt(x[I_YEAR]));
+		g.setGenre(x[I_GENRE]);
+		return g;
+	}
+
+//TODO: filter/sort method that returns # games that apply
+
+	/**
+	* Get Game IDs (TODO: with applied filters / sorting)
+	* @param int pageSize: how many results to return
+	* @param int page: Index of the page you want (0 based)
+	*/
+	public ArrayList<Game> getGames(int pageSize, int page) {
+		//TODO: apply filters/sort (get from pre-sorted)
+		int max = all.size();
+		ArrayList<Game> rtn = new ArrayList();
+		int start = page * pageSize;
+		for (int i = start; i < start + pageSize; ++i) {
+			rtn.add(all.get(i));
+			//TODO: wouldn't be pulling from "all" but from filtered ID set 
+				//TODO: use pointers to prevent sotring too many objects
+		}
+		return rtn;
 	}
 
 	/**

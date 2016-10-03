@@ -40,35 +40,53 @@ public class Game {
 	};
 
 	/********* Variables *********/
+	private boolean support = false;
+	private double rating   = 5;
+	private double userRate = 0;
+	private int id = 0;
 	private int type;
 	private int numPlayers;
+	private int numScreens;
 	private int year;
 	private String conf; //Configuration file
 	private String cmd; //Special command required to launch?
 	private String description = "No Description";
 	private String dir;
 	private String file;
+	private String genre;
+//TODO: make Icon an actual GUI element? or do in decorator?
 	private String icon;
 	private String name;
 	private String screenshot;
 //TODO: allow for multiple screenshots
 
 	/********* Getters *********/
-	public int    getNumPlayers()  { return numPlayers; }
-	public int    getType()        { return type; }
-	public int    getYear()        { return year; }
-	public String getTypeName()    { return TYPES[type]; }
-	public String getConf()        { return conf; }
-	public String getCmd()         { return cmd; }
-	public String getDescription() { return description; }
-	public String getDir()         { return dir; }
-	public String getFile()        { return file; }
-	public String getIcon()        { return icon; }
-	public String getName()        { return name; }
-	public String getScreenshot()  { return screenshot; }
+	public boolean getSupport()     { return support; }
+	public double  getRating()      { return rating; }
+	public double  getUserRate()    { return userRate; }
+	public int     getID()          { return id; }
+	public int     getNumPlayers()  { return numPlayers; }
+	public int     getNumScreens()  { return numScreens; }
+	public int     getType()        { return type; }
+	public int     getYear()        { return year; }
+	public String  getTypeName()    { return TYPES[type]; }
+	public String  getConf()        { return conf; }
+	public String  getCmd()         { return cmd; }
+	public String  getDescription() { return description; }
+	public String  getDir()         { return dir; }
+	public String  getFile()        { return file; }
+	public String  getGenre()       { return genre; }
+	public String  getIcon()        { return icon; }
+	public String  getName()        { return name; }
+	public String  getScreenshot()  { return screenshot; }
 
 	/********* Setters *********/
+	public void setSupport(boolean b)    { support = b; }
+	public void setRating(double d)      { rating = d; }
+	public void setUserRate(double d)    { userRate = d; }
+	public void setID(int i)             { id = i; }
 	public void setNumPlayers(int i)     { numPlayers = i; }
+	public void setNumScreens(int i)     { numScreens = i; }
 	public void setType(int i)           { type = i; }
 	public void setYear(int i)           { year = i; }
 	public void setConf(String s)        { conf = s; }
@@ -79,13 +97,40 @@ public class Game {
 	public void setIcon(String s)        { icon = s; }
 	public void setName(String s)        { name = s; }
 	public void setScreenshot(String s)  { screenshot = s; }
+	public void setGenre(String s)       {
+		//TODO: do as a hashMap
+		s = s.toLowerCase();
+		switch (s) {
+			case "adve": genre = "Adventure";     break;
+			case "arca": genre = "Arcade";        break;
+			case "batt": genre = "Battle";        break;
+			case "boar": genre = "Board Game";    break;
+			case "card": genre = "Card Game";     break;
+			case "educ": genre = "Education";     break;
+			case "esca": genre = "Escape";        break;
+			case "fps":  genre = "FPS";           break;
+			case "plat": genre = "Platformer";    break;
+			case "puzz": genre = "Puzzle";        break;
+			case "race": genre = "Racing";        break;
+			case "rpg":  genre = "RPG";           break;
+			case "shoo": genre = "Shooter";       break;
+			case "simu": genre = "Simulation";    break;
+			case "stea": genre = "Stealth";       break;
+			case "text": genre = "Text Based";    break;
+			case "word": genre = "Word Puzzle";   break;
+			default:     genre = "Unspecified";   break;
+		}
+	}
 
 
 	/********* Methods *********/
 
 	/**
-	* Creates a game, and tries to fetch configuration info
+	* Creates an empty game for us to populate
 	*/
+	public Game() {
+	}
+/*
 	public Game(String conf) throws Exception {
 		//Fetch Config File
 		this.conf = conf;
@@ -100,11 +145,11 @@ public class Game {
 			conf = sb.toString();
 System.out.println(conf);
 		}
-
 		//Parse Config & Populate Class Variables
 		; //TODO
 //TODO: Throw Error here if file is invalid (output it elegantly in Browser)
 	}
+*/
 
 	/**
 	* Outputs the meta data for a Game

@@ -23,6 +23,7 @@ public class Browser extends JFrame {
 
 	public static final int CARD_GAP_H = 10;
 	public static final int CARD_GAP_V = 10;
+	public static final int PAGE_SIZE  = 20;
 	public static final int SCREEN_H   = 600;
 	public static final int SCREEN_W   = 800;
 	public static final String TITLE   = "Game Browser";
@@ -54,7 +55,7 @@ public class Browser extends JFrame {
 	* Constructor initializes GUI
 	*/
 	public Browser() {
-		meta = Meta.getInstance();
+		meta = Meta.getInstance(); //Holds Game Data & Conf
 		initGUI();
 	}
 
@@ -73,9 +74,8 @@ public class Browser extends JFrame {
 
 		//Pack contents to display
 		pack();
-getContentPane().setSize(SCREEN_W, SCREEN_H);
 
-		fetchGameConf();
+		loadBrowser();
 
 		//TODO: redraw display??? or redraw on card switch
 		//pack();
@@ -154,6 +154,23 @@ bTemp3.addActionListener(new ActionListener() {
 	/**
 	* Scrapes directory to get Game data
 	*/
+	private void loadBrowser() {
+//TODO: apply filters/sorts to meta
+		int page = 0; //first page (TODO: where to pass in other pages?)
+		ArrayList<Game> games = meta.getGames(PAGE_SIZE, page);
+		for (int i = 0; i < games.size(); ++i) {
+			//TODO: insert each game into GUI
+			Game g = games.get(i);
+System.out.println("Displaying "+g.getID()+": "+g.getName());
+		}
+	}
+
+
+
+	/**
+	* Scrapes directory to get Game data
+	*/
+/*
 	private void fetchGameConf() {
 		games = new ArrayList<>();
 		try (DirectoryStream<Path> directoryStream =
@@ -177,9 +194,9 @@ System.out.println(games.get(i));
 System.out.println("===================");
 }
 
-
 //TODO: pBrowse.setLayout(new GridLayout(X, 1)); //where X is # games
 	}
+*/
 
 
 }
