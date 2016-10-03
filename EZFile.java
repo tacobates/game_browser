@@ -49,20 +49,21 @@ System.out.println(rtn); //TODO: delete after testing
 	* Assume no skipping of first TSV row
 	*/
 	public static ArrayList readTSV(String path) {
-		return readTSV(path, false)
+		return readTSV(path, false);
 	}
 	/**
 	* Returns the contents of a TSV file as a List of String[]
 	*/
 	public static ArrayList readTSV(String path, boolean skipRow1) {
-		List<String[]> rtn = "";
+		ArrayList<String[]> rtn = new ArrayList();
 		try(BufferedReader br = new BufferedReader(new FileReader(path))){
 			String line = br.readLine();
 			while (line != null) {
-				if (line.length > 1) { //Skip lines with no data
+				if (line.length() > 1 && !skipRow1) { //Skip lines with no data
 					rtn.add(line.split("\\t"));
 				}
 				line = br.readLine();
+				skipRow1 = false; //Whether or not it was ever true
 			}
 		} catch (Exception e) {
 		}

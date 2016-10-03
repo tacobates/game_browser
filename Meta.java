@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.*;
 
 /**
 * Stores Meta Data from community & users
@@ -47,7 +48,7 @@ public final class Meta {
 	public String getDirUser()   { return dirRoot + DIR_USER; }
 
 	/********* Setters *********/ //TODO: !!!
-	public void setDirRoot(String s)   { return dirRoot; }
+	public void setDirRoot(String s)   { dirRoot = s; }
 
 
 	/********* Methods *********/
@@ -75,23 +76,20 @@ System.out.println(toStringStatic());
 	* Reads the config file to populate our member variables
 	*/
 	private static void parseConfig() {
-//TODO: set dirRoot & dir* if config was saved
+		//TODO: set dirRoot & dir* if config was saved
+
+		//Get current user
 		user = System.getProperty("user.name");
-		ez = EZFile.getInstance();
-		all = ez.parseTSV(dirRoot + FILE_ALL, true);
-System.out.println("=========================");
-System.out.println(all);
-System.out.println("=========================");
-return;
 
+		//Get Basic Game Data (everything sortable & filterable)
 //TODO: look for community info, but deal with it if not synced
+		EZFile ez = EZFile.getInstance();
+		ArrayList<String[]> all = ez.readTSV(dirRoot + FILE_ALL, true);
+//String[] t = all.get(0);
+//System.out.println(t[0] + ", " + t[1] +", "+ t[2] +", "+ t[3] +", "+
+//	t[4] +", "+ t[5] +", "+ t[6] +", "+ t[7]);
 
-//TODO: catch IOException
-
-
-		//Parse Config & Populate Class Variables
-		//TODO
-//TODO: Throw Error here if file is invalid (output it elegantly in Browser)
+		//TODO: use "all" to create sorted sets, but do it after initial load
 	}
 
 	/**
@@ -107,24 +105,6 @@ return;
 	public static String toStringStatic() {
 		return "User: " + user + "\n" +
 			"";
-	}
-
-	/**
-	* 
-	*/
-	public static String readFile(String path) {
-		//Fetch Config File
-		try(BufferedReader br = new BufferedReader(new FileReader(allFile))){
-			StringBuilder sb = new StringBuilder();
-			String line = br.readLine();
-			while (line != null) {
-				sb.append(line);
-				sb.append(System.lineSeparator());
-				line = br.readLine();
-			}
-			conf = sb.toString();
-System.out.println(conf);
-		}
 	}
 }
 
