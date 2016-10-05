@@ -23,7 +23,7 @@ public class Browser extends JFrame {
 
 	public static final int CARD_GAP_H = 10;
 	public static final int CARD_GAP_V = 10;
-	public static final int PAGE_SIZE  = 20;
+	public static final int PAGE_SIZE  = 7; //TODO: set to 20
 	public static final int SCREEN_H   = 600;
 	public static final int SCREEN_W   = 800;
 	public static final String TITLE   = "Game Browser";
@@ -48,6 +48,8 @@ public class Browser extends JFrame {
 	private List<Game> games;
 
 	private Meta meta;
+
+	private RenderGame[] rows;
 
 	/********* Methods *********/
 
@@ -86,6 +88,8 @@ public class Browser extends JFrame {
 	* Shows the "loading" card by default
 	*/
 	private void makePanels() {
+		initBrowser();
+
 		//Card layout to switch between "browse" & "details"
 		cards = new JPanel(new CardLayout(CARD_GAP_H, CARD_GAP_V));
 		cards.setSize(SCREEN_W, SCREEN_H);
@@ -100,12 +104,17 @@ addButtons();
 		pLoad.add(lLoad, BorderLayout.CENTER);
 pLoad.add(pControls, BorderLayout.NORTH);
 
-		//Empty browse & detail panels to be populated later
-		pBrowse = new JPanel();
-		pDetail = new JPanel();
+		//Browser Pane
+//TODO: Where to put the paging controls ??? (GridLayout => GridBag?)
+		pBrowse = new JPanel(new GridLayout(PAGE_SIZE, 1));
+		for (int i = 0; i < rows.length; ++i)
+			pBrowse.add(rows[i]);
 
-pBrowse.add(bTemp1);
+		//Details Pane
+		pDetail = new JPanel();
 pDetail.add(bTemp2);
+//TODO: populate
+
 		//Scroll Panes for each Card
 		browseScroll = new JScrollPane(pBrowse);
 		detailScroll = new JScrollPane(pDetail);
@@ -138,7 +147,7 @@ bTemp3.addActionListener(new ActionListener() {
 }
 
 	/**TODO: make legit*/
-	private void card(int i) {
+	protected void card(int i) {
 		switch(i) {
 			case 2:
 				setTitle(TITLE2);
@@ -152,17 +161,24 @@ bTemp3.addActionListener(new ActionListener() {
 	}
 
 	/**
+	* Sets up the RenderGame elements for use & reuse
+	*/
+	private void initBrowser() {
+		rows = new RenderGame[PAGE_SIZE];
+		for (int i = 0; i < PAGE_SIZE; ++i)
+			rows[i] = new RenderBrowse(this);
+	}
+
+	/**
 	* Scrapes directory to get Game data
 	*/
 	private void loadBrowser() {
 //TODO: apply filters/sorts to meta
 		int page = 0; //first page (TODO: where to pass in other pages?)
 		ArrayList<Game> games = meta.getGames(PAGE_SIZE, page);
-		for (int i = 0; i < games.size(); ++i) {
-			//TODO: insert each game into GUI
-			Game g = games.get(i);
-System.out.println("Displaying "+g.getID()+": "+g.getName());
-		}
+		for (int i = 0; i < games.size(); ++i)
+			rows[i].setGame(games.get(i));
+//TODO: repaint???
 	}
 
 

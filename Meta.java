@@ -77,7 +77,7 @@ public final class Meta {
 			instance = new Meta();
 			parseConfig();
 		}
-System.out.println(toStringStatic());
+//System.out.println(toStringStatic());
 		return instance;
 	}
 
