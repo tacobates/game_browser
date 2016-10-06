@@ -1,10 +1,10 @@
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 
 import java.io.*;
 import java.nio.*;
@@ -35,6 +35,7 @@ public class Browser extends JFrame {
 	private JButton bTemp3;
 
 	private JLabel lLoad;
+	private JLabel lGif;
 
 	private JPanel cards;
 	private JPanel pBrowse;
@@ -73,38 +74,54 @@ public class Browser extends JFrame {
 		setTitle(TITLE);
 
 		makePanels();
-
-		//Pack contents to display
-		pack();
-
-		loadBrowser();
-
-		//TODO: redraw display??? or redraw on card switch
-		//pack();
+		//Nothing after this, since makePanels does an invoke later
 	}
 
 	/**
-	* Initializes our display panels
-	* Shows the "loading" card by default
+	* Initializes & shows the "loading" card, & triggers panel creation
 	*/
 	private void makePanels() {
-		initBrowser();
-
 		//Card layout to switch between "browse" & "details"
 		cards = new JPanel(new CardLayout(CARD_GAP_H, CARD_GAP_V));
 		cards.setSize(SCREEN_W, SCREEN_H);
 
 //Temp Buttons
-pControls = new JPanel(new GridLayout(1,3, 6,1)); //TODO: make 6/1 gap a CONST
-addButtons();
+//pControls = new JPanel(new GridLayout(1,3, 6,1)); //TODO: make 6/1 gap a CONST
+makeButtons();
 
 		//Loading Screen
 		pLoad = new JPanel(new BorderLayout());
-		lLoad = new JLabel("Looking for games...");
-		pLoad.add(lLoad, BorderLayout.CENTER);
-pLoad.add(pControls, BorderLayout.NORTH);
+String tempFile = "/home/pi/dev/game_browser/img/loading.gif";
+		lGif = new JLabel(new ImageIcon(tempFile));
+		lLoad = new JLabel("Looking for games...", JLabel.CENTER);
+		lLoad.setFont(lLoad.getFont().deriveFont(36.0f));
+		lLoad.setBorder(BorderFactory.createEmptyBorder(35,0,35,0));
+		pLoad.add(lLoad, BorderLayout.NORTH);
+		pLoad.add(lGif, BorderLayout.CENTER);
+		pLoad.pack();
 
+		//Add & Display Loading screen immediately
+		cards.add("0", pLoad);
+		getContentPane().add(cards);
+		pack();
+		setVisible(true);
+
+		SwingUtilities.invokeLater(new Runnable(){//do swing work on EDT
+			public void run(){
+				//  d.dispose();
+				finishPanels();
+				loadBrowser();
+			}
+		});
+	}
+
+	/**
+	* Finishes panel setup after initial loading screen has been displayed
+	*/
+	public void finishPanels() {
+try{Thread.sleep(2000);} catch(InterruptedException e) {}
 		//Browser Pane
+		initBrowser();
 //TODO: Where to put the paging controls ??? (GridLayout => GridBag?)
 		pBrowse = new JPanel(new GridLayout(PAGE_SIZE, 1));
 		for (int i = 0; i < rows.length; ++i)
@@ -113,37 +130,33 @@ pLoad.add(pControls, BorderLayout.NORTH);
 		//Details Pane
 		pDetail = new JPanel();
 pDetail.add(bTemp2);
-//TODO: populate
+pDetail.add(bTemp1);
+//TODO: populate details
 
 		//Scroll Panes for each Card
 		browseScroll = new JScrollPane(pBrowse);
 		detailScroll = new JScrollPane(pDetail);
 
 		//Add the Cards & place in Content Pane
-		cards.add("0", pLoad);
 		cards.add("1", browseScroll);
 		cards.add("2", detailScroll);
-		getContentPane().add(cards);
+
+		card(1);
+//TODO: dispose of GIF and card0 to free memory
 	}
 
 /**TODO: make legit*/
-private void addButtons() {
-bTemp1 = new JButton("Load C");
-bTemp2 = new JButton("Browse C");
-bTemp3 = new JButton("Detail C");
-//TODO: set button actions
-pControls.add(bTemp1);
-pControls.add(bTemp2);
-pControls.add(bTemp3);
-bTemp1.addActionListener(new ActionListener() {
-	public void actionPerformed(ActionEvent e) { card(0); }
-});
-bTemp2.addActionListener(new ActionListener() {
-	public void actionPerformed(ActionEvent e) { card(1); }
-});
-bTemp3.addActionListener(new ActionListener() {
-	public void actionPerformed(ActionEvent e) { card(2); }
-});
+private void makeButtons() {
+	bTemp1 = new JButton("Load C");
+	bTemp2 = new JButton("Browse C");
+	bTemp3 = new JButton("Detail C");
+bTemp1.addActionListener(new ActionListener(){public void actionPerformed(ActionEvent e){card(0);}});
+	bTemp2.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) { card(1); }
+	});
+	bTemp3.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) { card(2); }
+	});
 }
 
 	/**TODO: make legit*/
