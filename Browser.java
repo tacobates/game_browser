@@ -7,6 +7,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 
 import java.io.*;
+import java.net.URL;
 import java.nio.*;
 import java.nio.file.*;
 import java.util.*;
@@ -91,14 +92,13 @@ makeButtons();
 
 		//Loading Screen
 		pLoad = new JPanel(new BorderLayout());
-String tempFile = "/home/pi/dev/game_browser/img/loading.gif";
-		lGif = new JLabel(new ImageIcon(tempFile));
+		URL gif = Browser.class.getResource("/img/loading.gif");
+		lGif = new JLabel(new ImageIcon(gif));
 		lLoad = new JLabel("Looking for games...", JLabel.CENTER);
 		lLoad.setFont(lLoad.getFont().deriveFont(36.0f));
 		lLoad.setBorder(BorderFactory.createEmptyBorder(35,0,35,0));
 		pLoad.add(lLoad, BorderLayout.NORTH);
 		pLoad.add(lGif, BorderLayout.CENTER);
-		pLoad.pack();
 
 		//Add & Display Loading screen immediately
 		cards.add("0", pLoad);
@@ -106,6 +106,9 @@ String tempFile = "/home/pi/dev/game_browser/img/loading.gif";
 		pack();
 		setVisible(true);
 
+finishPanels();
+loadBrowser();
+/*
 		SwingUtilities.invokeLater(new Runnable(){//do swing work on EDT
 			public void run(){
 				//  d.dispose();
@@ -113,6 +116,7 @@ String tempFile = "/home/pi/dev/game_browser/img/loading.gif";
 				loadBrowser();
 			}
 		});
+*/
 	}
 
 	/**
