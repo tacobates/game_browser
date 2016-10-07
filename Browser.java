@@ -108,6 +108,7 @@ makeButtons();
 		setVisible(true);
 
 //TODO: this way??? http://stackoverflow.com/questions/20924230/java-draw-a-gif
+//TODO: or http://stackoverflow.com/questions/22240328/how-to-draw-a-gif-animation-in-java
 
 /*
 finishPanels();
