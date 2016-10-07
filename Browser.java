@@ -92,8 +92,9 @@ makeButtons();
 
 		//Loading Screen
 		pLoad = new JPanel(new BorderLayout());
-		URL gif = Browser.class.getResource("/img/loading.gif");
-		lGif = new JLabel(new ImageIcon(gif));
+		URL ugif = Browser.this.getClass().getResource("/img/loading.gif");
+		ImageIcon gif = new ImageIcon(ugif);
+		lGif = new JLabel(gif);
 		lLoad = new JLabel("Looking for games...", JLabel.CENTER);
 		lLoad.setFont(lLoad.getFont().deriveFont(36.0f));
 		lLoad.setBorder(BorderFactory.createEmptyBorder(35,0,35,0));
@@ -106,9 +107,12 @@ makeButtons();
 		pack();
 		setVisible(true);
 
+//TODO: this way??? http://stackoverflow.com/questions/20924230/java-draw-a-gif
+
+/*
 finishPanels();
 loadBrowser();
-/*
+*/
 		SwingUtilities.invokeLater(new Runnable(){//do swing work on EDT
 			public void run(){
 				//  d.dispose();
@@ -116,7 +120,6 @@ loadBrowser();
 				loadBrowser();
 			}
 		});
-*/
 	}
 
 	/**
