@@ -1,5 +1,7 @@
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -56,13 +58,19 @@ System.out.println("Show details for "+ game.getName());
 	*/
 	@Override
 	public void initLayout() {
+		setLayout(new GridLayout(1,7,8,0));
+		//name.setFont(name.getFont().deriveFont(22.0f));
+		//year.setHorizontalAlignment(SwingConstants.CENTER);
+		//year.setAlignmentX(CENTER_ALIGNMENT);
+
 		icon = new JLabel();
 		add(icon);
 		add(name);
+		add(year);
 		add(type);
 		add(genre);
-		add(rating);
 		add(numP);
+		add(rating);
 	}
 
 	/**
@@ -72,7 +80,6 @@ System.out.println("Show details for "+ game.getName());
 	public void refreshGUI() {
 		String p = meta.getDirRoot() + meta.DIR_ICON + "/";
 		String p2 = p + Integer.toString(game.getID()) + ".png";
-System.out.println("Exists? " + p2);
 		File f = new File(p2);
 		if (f.exists())
 			icon.setIcon(new ImageIcon(p2));

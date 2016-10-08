@@ -56,8 +56,8 @@ public class RenderDetail extends RenderGame {
 	*/
 	public RenderDetail(Browser b) {
 		super(b);
-		name.setFont(name.getFont().deriveFont(22.0f));
-		name.setHorizontalAlignment(SwingConstants.CENTER);
+		nameY.setFont(nameY.getFont().deriveFont(22.0f));
+		nameY.setHorizontalAlignment(SwingConstants.CENTER);
 		descrip.setOpaque(true);
 		descrip.setBackground(cBack);
 		descrip.setBorder(BorderFactory.createEmptyBorder(0,8,0,8));
@@ -129,7 +129,7 @@ public class RenderDetail extends RenderGame {
 		initButtons();
 
 		pTop.add(back, BorderLayout.WEST);
-		pTop.add(name, BorderLayout.CENTER);
+		pTop.add(nameY, BorderLayout.CENTER);
 		pTop.add(play, BorderLayout.EAST);
 
 		pMeta.add(lType);
