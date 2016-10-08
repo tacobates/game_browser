@@ -36,7 +36,6 @@ public class Browser extends JFrame {
 	private JButton bTemp3;
 
 	private JLabel lLoad;
-	private JLabel lGif;
 
 	private JPanel cards;
 	private JPanel pBrowse;
@@ -51,6 +50,8 @@ public class Browser extends JFrame {
 
 	private Meta meta;
 
+	private PanelGif lGif;
+
 	private RenderGame[] rows;
 
 	/********* Methods *********/
@@ -59,6 +60,9 @@ public class Browser extends JFrame {
 	* Constructor initializes GUI
 	*/
 	public Browser() {
+		//Pre-load GIF because it lazy loads too slowly
+		lGif = new PanelGif("/img/loading.gif", 480, 200);
+
 		meta = Meta.getInstance(); //Holds Game Data & Conf
 		initGUI();
 	}
@@ -92,9 +96,6 @@ makeButtons();
 
 		//Loading Screen
 		pLoad = new JPanel(new BorderLayout());
-		URL ugif = Browser.this.getClass().getResource("/img/loading.gif");
-		ImageIcon gif = new ImageIcon(ugif);
-		lGif = new JLabel(gif);
 		lLoad = new JLabel("Looking for games...", JLabel.CENTER);
 		lLoad.setFont(lLoad.getFont().deriveFont(36.0f));
 		lLoad.setBorder(BorderFactory.createEmptyBorder(35,0,35,0));
