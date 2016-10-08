@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -13,8 +14,8 @@ public class RenderBrowse extends RenderGame {
 //String[] TYPES = {ordinal list of names for TYPE_*}
 
 	/********* Variables *********/
-	private Color cBlue = new Color(124,174,255);
-	private Color cGray = new Color(220,220,220);
+	private Color cBlue = new Color(132,193,255);
+	private Color cGray = new Color(230,230,230);
 	private Color cWhite = new Color(245,245,245);
 	private ImageIcon icon = new ImageIcon();
 	private JButton bTemp1 = new JButton();
@@ -29,6 +30,7 @@ public class RenderBrowse extends RenderGame {
 	*/
 	public RenderBrowse(Browser b) {
 		super(b);
+		doResize();
 		defaultBackground();
 		addMouseListener(new MouseAdapter() {
 			@Override
@@ -70,6 +72,16 @@ System.out.println("Show details for "+ game.getName());
 	public void refreshGUI() {
 //TODO: make legit
 		super.refreshGUI(); //at end to trigger repaint when done
+	}
+
+	/**
+	*
+	*/
+	public void doResize() {
+		Dimension d = browser.getContentPane().getSize();
+		d.setSize(d.width - meta.PAD_W2, meta.ICON_H + meta.ICON_PAD);
+		setSize(d);
+		setPreferredSize(d);
 	}
 
 	/**

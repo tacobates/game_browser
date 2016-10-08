@@ -8,6 +8,12 @@ public final class Meta {
 	private static Meta instance = null; //Singleton
 
 	/********* Constants *********/
+	public static final int CARD_GAP_H     = 2;
+	public static final int CARD_GAP_V     = 0;
+	public static final int DEF_H          = 600;
+	public static final int DEF_W          = 800;
+	public static final int GIF_H          = 200;
+	public static final int GIF_W          = 480;
 	public static final int I_SUPPORT      = 0;
 	public static final int I_ID           = 1;
 	public static final int I_TYPE         = 2;
@@ -16,6 +22,13 @@ public final class Meta {
 	public static final int I_YEAR         = 5;
 	public static final int I_GENRE        = 6;
 	public static final int I_NAME         = 7;
+	public static final int ICON_H         = 64;
+	public static final int ICON_PAD       = 2;
+	public static final int ICON_W         = 64;
+	public static final int PAD_H          = 35; //size of header
+	public static final int PAD_W          = 6;  //size of border
+	public static final int PAD_W2         = 25; //size of scroll bar
+	public static final int PAGE_SIZE      = 20;
 	public static final String SEP         = "/";
 	public static final String DIR_CONF    = "/detail";
 	public static final String DIR_ICON    = "/icon";
@@ -26,6 +39,8 @@ public final class Meta {
 	public static final String LOG_ACC     = "/log/access.log";
 	public static final String LOG_ERR     = "/log/error.log";
 	public static final String LOG_INST    = "/log/install.log";
+	public static final String TITLE       = "Game Browser";
+	public static final String TITLE2      = "Game Details";
 
 //TODO: get DIRs from user entered data, but assume these (even DIR)
 //TODO: allow for multiple directories to be entered
@@ -161,15 +176,14 @@ public final class Meta {
 
 	/**
 	* Get Game IDs (TODO: with applied filters / sorting)
-	* @param int pageSize: how many results to return
 	* @param int page: Index of the page you want (0 based)
 	*/
-	public ArrayList<Game> getGames(int pageSize, int page) {
+	public ArrayList<Game> getGames(int page) {
 		//TODO: apply filters/sort (get from pre-sorted)
 		int max = all.size();
 		ArrayList<Game> rtn = new ArrayList();
-		int start = page * pageSize;
-		for (int i = start; i < start + pageSize; ++i) {
+		int start = page * PAGE_SIZE;
+		for (int i = start; i < start + PAGE_SIZE; ++i) {
 			rtn.add(all.get(i));
 			//TODO: wouldn't be pulling from "all" but from filtered ID set 
 				//TODO: use pointers to prevent sotring too many objects

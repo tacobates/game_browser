@@ -1,10 +1,14 @@
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.Point;
 
 import java.io.*;
 import java.net.URL;
@@ -22,20 +26,14 @@ public class Browser extends JFrame {
 	public static final String _CONF_DIR = "/usr/share/games/_conf";
 //TODO: replace above with reference to Meta.getConfDir()
 
-	public static final int CARD_GAP_H = 10;
-	public static final int CARD_GAP_V = 10;
-	public static final int PAGE_SIZE  = 7; //TODO: set to 20
-	public static final int SCREEN_H   = 600;
-	public static final int SCREEN_W   = 800;
-	public static final String TITLE   = "Game Browser";
-	public static final String TITLE2  = "Game Details";
-
 	/********* Variables *********/
+	private Dimension dSize;  //Size of Window as a whole
+	private Dimension dSize2; //Size of Body (minus header, borders)
+
 	private JLabel lLoad;
 
 	private JPanel cards;
 	private JPanel pBrowse;
-	private JPanel pControls; //TODO: set up some controls???
 	private JPanel pLoad;
 
 	private JScrollPane browseScroll;
@@ -49,7 +47,7 @@ public class Browser extends JFrame {
 
 	private RenderDetail pDetail;
 
-	private RenderGame[] rows;
+	private RenderBrowse[] rows;
 
 	/********* Methods *********/
 
@@ -57,10 +55,11 @@ public class Browser extends JFrame {
 	* Constructor initializes GUI
 	*/
 	public Browser() {
-		//Pre-load GIF because it lazy loads too slowly
-		lGif = new PanelGif("/img/loading.gif", 480, 200);
-
 		meta = Meta.getInstance(); //Holds Game Data & Conf
+
+		//Pre-load GIF because it lazy loads too slowly
+		lGif = new PanelGif("/img/loading.gif", meta.GIF_W, meta.GIF_H);
+
 		initGUI();
 	}
 
@@ -68,27 +67,56 @@ public class Browser extends JFrame {
 	* Create & show GUI
 	*/
 	private void initGUI() {
+		dSize = new Dimension(meta.DEF_W, meta.DEF_H);
+
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(new FlowLayout()); //only include wrapper panel cards
 		setLocationRelativeTo(null);
-		setPreferredSize(new Dimension(SCREEN_W, SCREEN_H));
-		setSize(SCREEN_W, SCREEN_H);
-		setTitle(TITLE);
+		setLocation(new Point(0,0));
+		setResizable(true);
+		setSize(dSize);
+		setPreferredSize(dSize);
+		setTitle(meta.TITLE);
 
-		makePanels();
-		//Nothing after this, since makePanels does an invoke later
+		initPanels();
+		initResizeListener();
+		doResize();
 	}
 
 	/**
-	* Initializes & shows the "loading" card, & triggers panel creation
+	* Resizes elements based on dSize
 	*/
-	private void makePanels() {
-		//Card layout to switch between "browse" & "details"
-		cards = new JPanel(new CardLayout(CARD_GAP_H, CARD_GAP_V));
-		cards.setSize(SCREEN_W, SCREEN_H);
+	private void doResize() {
+		int h = dSize.height;
+		int w = dSize.width;
+//System.out.println("Resizing " + w + " x " + h);
+		dSize2 = new Dimension(w - meta.PAD_W, h - meta.PAD_H);
+		browseScroll.setSize(dSize2);
+		browseScroll.setPreferredSize(dSize2);
+		cards.setSize(dSize2);
+		cards.setPreferredSize(dSize2);
 
-//Temp Buttons
-//pControls = new JPanel(new GridLayout(1,3, 6,1)); //TODO: make 6/1 gap a CONST
+		revalidate(); //Redraw the new sizes immediately
+	}
+
+	/**
+	* Listens for window resize to resize other elements
+	*/
+	private void initResizeListener() {
+		addComponentListener(new ComponentAdapter() {  
+			public void componentResized(ComponentEvent evt) {
+				dSize = getSize();
+				doResize();
+			}
+		});
+	}
+
+	/**
+	* Initializes panels for App
+	*/
+	private void initPanels() {
+		//Card layout to switch between "browse" & "details"
+		cards = new JPanel(new CardLayout(meta.CARD_GAP_H, meta.CARD_GAP_V));
 
 		//Loading Screen
 		pLoad = new JPanel(new BorderLayout());
@@ -104,33 +132,8 @@ public class Browser extends JFrame {
 		pack();
 		setVisible(true);
 
-//TODO: this way??? http://stackoverflow.com/questions/20924230/java-draw-a-gif
-//TODO: or http://stackoverflow.com/questions/22240328/how-to-draw-a-gif-animation-in-java
-
-/*
-finishPanels();
-loadBrowser();
-*/
-		SwingUtilities.invokeLater(new Runnable(){//do swing work on EDT
-			public void run(){
-				//  d.dispose();
-				finishPanels();
-				loadBrowser();
-			}
-		});
-	}
-
-	/**
-	* Finishes panel setup after initial loading screen has been displayed
-	*/
-	public void finishPanels() {
-//try{Thread.sleep(2000);} catch(InterruptedException e) {}
 		//Browser Pane
 		initBrowser();
-//TODO: Where to put the paging controls ??? (GridLayout => GridBag?)
-		pBrowse = new JPanel(new GridLayout(PAGE_SIZE, 1));
-		for (int i = 0; i < rows.length; ++i)
-			pBrowse.add(rows[i]);
 
 		//Details Pane
 		pDetail = new RenderDetail(this);
@@ -144,6 +147,8 @@ loadBrowser();
 		cards.add("2", detailScroll);
 
 		card(1);
+
+		loadBrowser();
 //TODO: dispose of GIF and card0 to free memory
 	}
 
@@ -162,10 +167,10 @@ loadBrowser();
 	protected void card(int i) {
 		switch(i) {
 			case 2:
-				setTitle(TITLE2);
+				setTitle(meta.TITLE2);
 				break;
 			default:
-				setTitle(TITLE);
+				setTitle(meta.TITLE);
 				break;
 		}
 		CardLayout c = (CardLayout)(cards.getLayout());
@@ -176,9 +181,13 @@ loadBrowser();
 	* Sets up the RenderGame elements for use & reuse
 	*/
 	private void initBrowser() {
-		rows = new RenderGame[PAGE_SIZE];
-		for (int i = 0; i < PAGE_SIZE; ++i)
+		rows = new RenderBrowse[meta.PAGE_SIZE];
+		for (int i = 0; i < meta.PAGE_SIZE; ++i)
 			rows[i] = new RenderBrowse(this);
+
+		pBrowse = new JPanel(new GridLayout(meta.PAGE_SIZE, 1));
+		for (int i = 0; i < rows.length; ++i)
+			pBrowse.add(rows[i]);
 	}
 
 	/**
@@ -187,7 +196,7 @@ loadBrowser();
 	private void loadBrowser() {
 //TODO: apply filters/sorts to meta
 		int page = 0; //first page (TODO: where to pass in other pages?)
-		ArrayList<Game> games = meta.getGames(PAGE_SIZE, page);
+		ArrayList<Game> games = meta.getGames(page);
 		for (int i = 0; i < games.size(); ++i)
 			rows[i].setGame(games.get(i));
 //TODO: repaint???
