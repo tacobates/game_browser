@@ -31,16 +31,11 @@ public class Browser extends JFrame {
 	public static final String TITLE2  = "Game Details";
 
 	/********* Variables *********/
-	private JButton bTemp1;
-	private JButton bTemp2;
-	private JButton bTemp3;
-
 	private JLabel lLoad;
 
 	private JPanel cards;
 	private JPanel pBrowse;
 	private JPanel pControls; //TODO: set up some controls???
-	private JPanel pDetail;
 	private JPanel pLoad;
 
 	private JScrollPane browseScroll;
@@ -51,6 +46,8 @@ public class Browser extends JFrame {
 	private Meta meta;
 
 	private PanelGif lGif;
+
+	private RenderDetail pDetail;
 
 	private RenderGame[] rows;
 
@@ -92,7 +89,6 @@ public class Browser extends JFrame {
 
 //Temp Buttons
 //pControls = new JPanel(new GridLayout(1,3, 6,1)); //TODO: make 6/1 gap a CONST
-makeButtons();
 
 		//Loading Screen
 		pLoad = new JPanel(new BorderLayout());
@@ -128,7 +124,7 @@ loadBrowser();
 	* Finishes panel setup after initial loading screen has been displayed
 	*/
 	public void finishPanels() {
-try{Thread.sleep(2000);} catch(InterruptedException e) {}
+//try{Thread.sleep(2000);} catch(InterruptedException e) {}
 		//Browser Pane
 		initBrowser();
 //TODO: Where to put the paging controls ??? (GridLayout => GridBag?)
@@ -137,10 +133,7 @@ try{Thread.sleep(2000);} catch(InterruptedException e) {}
 			pBrowse.add(rows[i]);
 
 		//Details Pane
-		pDetail = new JPanel();
-pDetail.add(bTemp2);
-pDetail.add(bTemp1);
-//TODO: populate details
+		pDetail = new RenderDetail(this);
 
 		//Scroll Panes for each Card
 		browseScroll = new JScrollPane(pBrowse);
@@ -154,21 +147,18 @@ pDetail.add(bTemp1);
 //TODO: dispose of GIF and card0 to free memory
 	}
 
-/**TODO: make legit*/
-private void makeButtons() {
-	bTemp1 = new JButton("Load C");
-	bTemp2 = new JButton("Browse C");
-	bTemp3 = new JButton("Detail C");
-bTemp1.addActionListener(new ActionListener(){public void actionPerformed(ActionEvent e){card(0);}});
-	bTemp2.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) { card(1); }
-	});
-	bTemp3.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) { card(2); }
-	});
-}
+	/**
+	* Sets the Game for the Detail Pane to display
+	* @param Game g: the game the user has asked to see details for
+	*/
+	protected void setDetailGame(Game g) {
+		pDetail.setGame(g);
+	}
 
-	/**TODO: make legit*/
+	/**
+	* Switches the card currently displayed in this frame
+	* @param int i: the numeric ID for the card
+	*/
 	protected void card(int i) {
 		switch(i) {
 			case 2:

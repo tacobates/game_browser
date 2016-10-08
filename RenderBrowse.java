@@ -34,7 +34,7 @@ public class RenderBrowse extends RenderGame {
 			@Override
 			public void mousePressed(MouseEvent e) {
 System.out.println("Show details for "+ game.getName());
-				//browser.setDetailGame(game); //TODO: something like this
+				browser.setDetailGame(game); //TODO: something like this
 				browser.card(2);
 			}
 			@Override
@@ -82,6 +82,7 @@ System.out.println("Show details for "+ game.getName());
 	public int launch() {
 		System.out.println("This type of game is not yet supported.");
 		return 0; //TODO: get and return the PID so we can track run time?
+//TODO: put in RenderGame and just delegate to Game.launch()
 	}
 }
 

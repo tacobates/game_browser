@@ -24,7 +24,7 @@ public class RenderGame extends JPanel {
 	protected final Browser browser;
 	protected Game game;
 	protected ImageIcon icon = new ImageIcon();
-	protected JButton bTemp1 = new JButton();
+	protected JLabel descrip = new JLabel();
 	protected JLabel genre = new JLabel();
 	protected JLabel name = new JLabel("TODO: deleteme!!!");
 	protected JLabel numP = new JLabel();
@@ -65,6 +65,7 @@ public class RenderGame extends JPanel {
 	*/
 	public void refreshGUI() {
 		//TODO: make legit
+		descrip.setText(game.getDescription());
 		genre.setText(game.getGenre());
 		name.setText(game.getName());
 		numP.setText(Integer.toString(game.getNumPlayers()));
