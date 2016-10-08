@@ -4,6 +4,11 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import java.io.*;
+import java.nio.*;
+import java.nio.file.*;
+
 import javax.swing.*;
 
 /**
@@ -80,7 +85,6 @@ public class RenderDetail extends RenderGame {
 		pMeta = new JPanel(new GridLayout(4,2,10,0));
 		pBottom = new JPanel(new BorderLayout());
 		pBtns = new JPanel();
-//TODO: if no image, use the default 0.jpg for "no screenshot"
 
 		pMiddle.setBorder(BorderFactory.createEmptyBorder(10,0,10,0)); //margins
 		pMeta.setBorder(BorderFactory.createEmptyBorder(0,0,0,10)); //margin R
@@ -96,21 +100,21 @@ public class RenderDetail extends RenderGame {
 		screenPrev = new JButton("<-");
 		back.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mousePressed(MouseEvent e) { browser.card(1); }
+			public void mouseClicked(MouseEvent e) { browser.card(1); }
 		});
 		play.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mousePressed(MouseEvent e) {
+			public void mouseClicked(MouseEvent e) {
 				//TODO: game.launch() ???
 			}
 		});
 		screenNext.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mousePressed(MouseEvent e) { screen(1); }
+			public void mouseClicked(MouseEvent e) { screen(1); }
 		});
 		screenPrev.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mousePressed(MouseEvent e) { screen(-1); }
+			public void mouseClicked(MouseEvent e) { screen(-1); }
 		});
 	}
 
@@ -145,8 +149,8 @@ public class RenderDetail extends RenderGame {
 
 		screen.add(lScreen);
 
+		pBottom.add(pBtns, BorderLayout.NORTH);
 		pBottom.add(screen, BorderLayout.CENTER);
-		pBottom.add(pBtns, BorderLayout.SOUTH);
 
 		pBody.add(pMiddle, BorderLayout.NORTH);
 		pBody.add(pBottom, BorderLayout.CENTER);
@@ -172,15 +176,33 @@ String d = "TODO: fetch real description from file<br>Make sure it can handle li
 	}
 
 	/**
+	* Scans a directory to determine the number of screenshots
+	* @param String p: the full path to the directory where jpg screenshots live
+	*/
+	private int scanScreens(String p) {
+		int rtn = 0;
+		try (DirectoryStream<Path> directoryStream =
+			Files.newDirectoryStream(Paths.get(p))) {
+			for (Path path : directoryStream)
+				if (path.toString().endsWith(".jpg"))
+					rtn++;
+		} catch (Exception ex) {
+			System.out.println("Cannot scan screenshot dir '" + p + "'");
+		}
+		game.setNumScreens(rtn);
+		return rtn;
+	}
+
+	/**
 	* Changes the screenshot to +1 or -1
 	*/
 	public void screen(int increment) {
+		String p = meta.getDirRoot() + meta.DIR_SCREEN + "/";
+		p += Integer.toString(game.getID()) + "/";
+
 		int max = game.getNumScreens();
-		if (0 == max) {
-//TODO: go parse files for num screens
-max = 1;
-			game.setNumScreens(max);
-		}
+		if (0 == max)
+			max = scanScreens(p);
 
 		screenI += increment;
 		if (screenI > max)
@@ -188,11 +210,10 @@ max = 1;
 		else if (screenI < 1)
 			screenI = max;
 
-		//TODO: make URL from meta DIRs
-		String p = meta.getDirRoot() + meta.DIR_SCREEN + "/";
-		p += Integer.toString(game.getID()) + "/";
+		//Image path
 		p += Integer.toString(screenI) + ".jpg";
-System.out.println("Set Image: " + p);
+		if (max == 0) //Didn't have any screenshots
+			p = meta.getDirRoot() + meta.DIR_SCREEN + "/0.jpg";
 		img = new ImageIcon(p);
 		lScreen.setIcon(img);
 
