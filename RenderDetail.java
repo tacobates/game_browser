@@ -1,4 +1,6 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -13,6 +15,8 @@ public class RenderDetail extends RenderGame {
 	public static final String HTML_Z = "</body></html>";
 
 	/********* Variables *********/
+	private Color cBack   = new Color(205,205,205);
+
 	private ImageIcon img = new ImageIcon();
 
 	private JButton back;
@@ -20,9 +24,16 @@ public class RenderDetail extends RenderGame {
 	private JButton screenNext;
 	private JButton screenPrev;
 
+	private JLabel lGenre;
+	private JLabel lNumP;
+	private JLabel lRate;
+	private JLabel lType;
+
 	private JPanel screen;
 	private JPanel pTop;
+	private JPanel pBody;
 	private JPanel pMiddle;
+	private JPanel pMeta;
 	private JPanel pBottom;
 
 	private String config;
@@ -36,28 +47,46 @@ public class RenderDetail extends RenderGame {
 	*/
 	public RenderDetail(Browser b) {
 		super(b);
-		name.setFont(name.getFont().deriveFont(20.0f));
+		name.setFont(name.getFont().deriveFont(22.0f));
+		name.setHorizontalAlignment(SwingConstants.CENTER);
+		descrip.setOpaque(true);
+		descrip.setBackground(cBack);
+		descrip.setBorder(BorderFactory.createEmptyBorder(0,8,0,8));
+	}
+
+	/**
+	* Setup the JLabels
+	*/
+	protected void initLabels() {
+		lGenre = new JLabel("Genre:",   SwingConstants.RIGHT);
+		lNumP  = new JLabel("Players:", SwingConstants.RIGHT);
+		lRate  = new JLabel("Rated:",   SwingConstants.RIGHT);
+		lType  = new JLabel("Type:",    SwingConstants.RIGHT);
 	}
 
 	/**
 	* Setup the sub-panes
 	*/
-	protected void setupPanels() {
+	protected void initPanels() {
 		//TODO: setup screen with an image
 		screen = new JPanel();
-		pTop = new JPanel();
-		pMiddle = new JPanel();
-//TODO: what layout for pMiddle?
+		pTop = new JPanel(new BorderLayout());
+		pBody = new JPanel(new BorderLayout());
+		pMiddle = new JPanel(new BorderLayout());
+		pMeta = new JPanel(new GridLayout(4,2,10,0));
 		pBottom = new JPanel(new BorderLayout());
 //TODO: if no image, use the default 0.jpg for "no screenshot"
+
+		pTop.setBorder(BorderFactory.createEmptyBorder(0,0,10,0)); //margin below
+		pMeta.setBorder(BorderFactory.createEmptyBorder(0,0,0,10));//margin R
 	}
 
 	/**
 	* Setup the buttons for the Details pane
 	*/
-	protected void setupButtons() {
-		back = new JButton("Back to Browse");
-		play = new JButton("Play Game");
+	protected void initButtons() {
+		back = new JButton("Back");
+		play = new JButton("Play");
 		screenNext = new JButton("->");
 		screenPrev = new JButton("<-");
 		back.addMouseListener(new MouseAdapter() {
@@ -86,28 +115,35 @@ public class RenderDetail extends RenderGame {
 	@Override
 	public void initLayout() {
 		setLayout(new BorderLayout());
-		setupPanels();
-		setupButtons();
+		initPanels();
+		initLabels();
+		initButtons();
 
-		pTop.add(back);
-		pTop.add(name);
-		pTop.add(play);
+		pTop.add(back, BorderLayout.WEST);
+		pTop.add(name, BorderLayout.CENTER);
+		pTop.add(play, BorderLayout.EAST);
 
-		pMiddle.add(descrip);
-		pMiddle.add(year);
-		pMiddle.add(type);
-		pMiddle.add(genre);
-		pMiddle.add(rating);
-		pMiddle.add(numP);
+		pMeta.add(lType);
+		pMeta.add(type);
+		pMeta.add(lGenre);
+		pMeta.add(genre);
+		pMeta.add(lNumP);
+		pMeta.add(numP);
+		pMeta.add(lRate);
+		pMeta.add(rating);
 
-		pBottom.add(screen, BorderLayout.NORTH);
+		pMiddle.add(pMeta, BorderLayout.WEST);
+		pMiddle.add(descrip, BorderLayout.CENTER);
+
+		pBottom.add(screen, BorderLayout.CENTER);
 		pBottom.add(screenPrev, BorderLayout.SOUTH);
 		pBottom.add(screenNext, BorderLayout.SOUTH);
 
+		pBody.add(pMiddle, BorderLayout.NORTH);
+		pBody.add(pBottom, BorderLayout.CENTER);
+
 		add(pTop, BorderLayout.NORTH);
-		add(pMiddle, BorderLayout.CENTER);
-		add(pBottom, BorderLayout.SOUTH);
-//TODO: size and place things WAY better
+		add(pBody, BorderLayout.CENTER);
 	}
 
 	/**

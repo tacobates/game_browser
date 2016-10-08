@@ -58,7 +58,6 @@ System.out.println("Show details for "+ game.getName());
 	@Override
 	public void initLayout() {
 		add(name);
-		add(year);
 		add(type);
 		add(genre);
 		add(rating);

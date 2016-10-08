@@ -141,6 +141,7 @@ public class Browser extends JFrame {
 		//Scroll Panes for each Card
 		browseScroll = new JScrollPane(pBrowse);
 		detailScroll = new JScrollPane(pDetail);
+		detailScroll.setBorder(BorderFactory.createEmptyBorder());
 
 		//Add the Cards & place in Content Pane
 		cards.add("1", browseScroll);
