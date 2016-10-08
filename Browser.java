@@ -11,7 +11,6 @@ import java.awt.GridLayout;
 import java.awt.Point;
 
 import java.io.*;
-import java.net.URL;
 import java.nio.*;
 import java.nio.file.*;
 import java.util.*;
@@ -148,6 +147,7 @@ public class Browser extends JFrame {
 		cards.add("2", detailScroll);
 
 		card(1);
+		revalidate(); //Try to force Gif to display
 
 		loadBrowser();
 //TODO: dispose of GIF and card0 to free memory

@@ -15,9 +15,11 @@ public class RenderDetail extends RenderGame {
 	public static final String HTML_Z = "</body></html>";
 
 	/********* Variables *********/
+	private int screenI = 1;
+
 	private Color cBack   = new Color(205,205,205);
 
-	private ImageIcon img = new ImageIcon();
+	private ImageIcon img;
 
 	private JButton back;
 	private JButton play;
@@ -27,6 +29,7 @@ public class RenderDetail extends RenderGame {
 	private JLabel lGenre;
 	private JLabel lNumP;
 	private JLabel lRate;
+	private JLabel lScreen;
 	private JLabel lType;
 
 	private JPanel screen;
@@ -35,6 +38,7 @@ public class RenderDetail extends RenderGame {
 	private JPanel pMiddle;
 	private JPanel pMeta;
 	private JPanel pBottom;
+	private JPanel pBtns;
 
 	private String config;
 
@@ -62,23 +66,24 @@ public class RenderDetail extends RenderGame {
 		lNumP  = new JLabel("Players:", SwingConstants.RIGHT);
 		lRate  = new JLabel("Rated:",   SwingConstants.RIGHT);
 		lType  = new JLabel("Type:",    SwingConstants.RIGHT);
+		lScreen = new JLabel();
 	}
 
 	/**
 	* Setup the sub-panes
 	*/
 	protected void initPanels() {
-		//TODO: setup screen with an image
 		screen = new JPanel();
 		pTop = new JPanel(new BorderLayout());
 		pBody = new JPanel(new BorderLayout());
 		pMiddle = new JPanel(new BorderLayout());
 		pMeta = new JPanel(new GridLayout(4,2,10,0));
 		pBottom = new JPanel(new BorderLayout());
+		pBtns = new JPanel();
 //TODO: if no image, use the default 0.jpg for "no screenshot"
 
-		pTop.setBorder(BorderFactory.createEmptyBorder(0,0,10,0)); //margin below
-		pMeta.setBorder(BorderFactory.createEmptyBorder(0,0,0,10));//margin R
+		pMiddle.setBorder(BorderFactory.createEmptyBorder(10,0,10,0)); //margins
+		pMeta.setBorder(BorderFactory.createEmptyBorder(0,0,0,10)); //margin R
 	}
 
 	/**
@@ -135,9 +140,13 @@ public class RenderDetail extends RenderGame {
 		pMiddle.add(pMeta, BorderLayout.WEST);
 		pMiddle.add(descrip, BorderLayout.CENTER);
 
+		pBtns.add(screenPrev);
+		pBtns.add(screenNext);
+
+		screen.add(lScreen);
+
 		pBottom.add(screen, BorderLayout.CENTER);
-		pBottom.add(screenPrev, BorderLayout.SOUTH);
-		pBottom.add(screenNext, BorderLayout.SOUTH);
+		pBottom.add(pBtns, BorderLayout.SOUTH);
 
 		pBody.add(pMiddle, BorderLayout.NORTH);
 		pBody.add(pBottom, BorderLayout.CENTER);
@@ -157,6 +166,8 @@ String d = "TODO: fetch real description from file<br>Make sure it can handle li
 		game.setDescription(HTML_A + d + HTML_Z);
 		descrip.setText(d);
 
+		screen(0);
+
 		super.refreshGUI(); //at end to trigger repaint when done
 	}
 
@@ -164,7 +175,29 @@ String d = "TODO: fetch real description from file<br>Make sure it can handle li
 	* Changes the screenshot to +1 or -1
 	*/
 	public void screen(int increment) {
-		//TODO: add & mod the result, refresh img & screen
+		int max = game.getNumScreens();
+		if (0 == max) {
+//TODO: go parse files for num screens
+max = 1;
+			game.setNumScreens(max);
+		}
+
+		screenI += increment;
+		if (screenI > max)
+			screenI = 1;
+		else if (screenI < 1)
+			screenI = max;
+
+		//TODO: make URL from meta DIRs
+		String p = meta.getDirRoot() + meta.DIR_SCREEN + "/";
+		p += Integer.toString(game.getID()) + "/";
+		p += Integer.toString(screenI) + ".jpg";
+System.out.println("Set Image: " + p);
+		img = new ImageIcon(p);
+		lScreen.setIcon(img);
+
+		browser.revalidate();
+		browser.repaint();
 	}
 
 	public int launch() {

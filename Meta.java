@@ -47,7 +47,8 @@ public final class Meta {
 
 	/********* Variables *********/
 	private static ArrayList<Game> all;
-	private static String dirRoot = "/usr/local/game_meta";
+//	private static String dirRoot = "/usr/local/game_meta";
+private static String dirRoot = "/home/pi/dev/game_meta";
 	private static String dirBash = "/usr/share/games/bash";
 	private static String dirX11  = "/usr/share/games/x11";
 	private static String dirDos  = "/usr/share/games/dos";
