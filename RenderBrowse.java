@@ -1,8 +1,10 @@
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import java.io.File;
+
 import javax.swing.*;
 
 /**
@@ -17,9 +19,6 @@ public class RenderBrowse extends RenderGame {
 	private Color cBlue = new Color(132,193,255);
 	private Color cGray = new Color(230,230,230);
 	private Color cWhite = new Color(245,245,245);
-	private ImageIcon icon = new ImageIcon();
-	private JButton bTemp1 = new JButton();
-	private JLabel lTemp1 = new JLabel();
 
 
 	/********* Methods *********/
@@ -57,6 +56,8 @@ System.out.println("Show details for "+ game.getName());
 	*/
 	@Override
 	public void initLayout() {
+		icon = new JLabel();
+		add(icon);
 		add(name);
 		add(type);
 		add(genre);
@@ -69,7 +70,15 @@ System.out.println("Show details for "+ game.getName());
 	*/
 	@Override
 	public void refreshGUI() {
-//TODO: make legit
+		String p = meta.getDirRoot() + meta.DIR_ICON + "/";
+		String p2 = p + Integer.toString(game.getID()) + ".png";
+System.out.println("Exists? " + p2);
+		File f = new File(p2);
+		if (f.exists())
+			icon.setIcon(new ImageIcon(p2));
+		else //No icon
+			icon.setIcon(new ImageIcon(p + "0.png"));
+
 		super.refreshGUI(); //at end to trigger repaint when done
 	}
 

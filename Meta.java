@@ -23,12 +23,12 @@ public final class Meta {
 	public static final int I_GENRE        = 6;
 	public static final int I_NAME         = 7;
 	public static final int ICON_H         = 64;
-	public static final int ICON_PAD       = 2;
+	public static final int ICON_PAD       = 10;
 	public static final int ICON_W         = 64;
 	public static final int PAD_H          = 35; //size of header
 	public static final int PAD_W          = 6;  //size of border
 	public static final int PAD_W2         = 25; //size of scroll bar
-	public static final int PAGE_SIZE      = 15;
+	public static final int PAGE_SIZE      = 12;
 	public static final String SEP         = "/";
 	public static final String DIR_CONF    = "/detail";
 	public static final String DIR_ICON    = "/icon";

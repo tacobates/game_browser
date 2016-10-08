@@ -23,7 +23,7 @@ public class RenderGame extends JPanel {
 
 	protected final Browser browser;
 	protected Game game;
-	protected ImageIcon icon = new ImageIcon();
+	protected JLabel icon;
 	protected JLabel descrip = new JLabel();
 	protected JLabel genre = new JLabel();
 	protected JLabel name = new JLabel("TODO: deleteme!!!");
