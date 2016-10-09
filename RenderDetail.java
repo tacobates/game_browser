@@ -15,10 +15,6 @@ import javax.swing.*;
 * Renders a game for the detail pane
 */
 public class RenderDetail extends RenderGame {
-	/********* Constants *********/
-	public static final String HTML_A = "<html><body>";
-	public static final String HTML_Z = "</body></html>";
-
 	/********* Variables *********/
 	private int screenI = 1;
 
@@ -160,18 +156,26 @@ public class RenderDetail extends RenderGame {
 	}
 
 	/**
+	* Fetches details (descrip & conf) for our game object
+	*/
+	public void parseDetail() {
+		EZFile ez = EZFile.getInstance();
+		String p = meta.getDirRoot() + meta.DIR_CONF + "/" +
+			Integer.toString(game.getID());
+		String c = ez.readFile(p + ".conf");
+		String d = ez.readFile(p + ".txt", "No description");
+		game.setConf(c);
+		game.setDescription(meta.HTML_A + d + meta.HTML_Z); //assume HTML escaped
+		descrip.setText(d);
+	}
+
+	/**
 	* Refreshes the GUI elements with their new data
 	*/
 	@Override
 	public void refreshGUI() {
-		//TODO: fetch descrip & config from file
-String d = "TODO: fetch real description from file<br>Make sure it can handle line breaks & special chars !@#$%^&*()_+=-`~.<br>Especially multiple line breaks!!!";
-		//d = d.replaceAll("<br/?>", "\n"); //don't escape, JLabel can do html
-		game.setDescription(HTML_A + d + HTML_Z);
-		descrip.setText(d);
-
-		screen(0);
-
+		parseDetail(); //get Descrip & Conf
+		screen(0); //Show the first Screenshot
 		super.refreshGUI(); //at end to trigger repaint when done
 	}
 

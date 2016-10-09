@@ -25,8 +25,11 @@ public final class EZFile {
 
 	/**
 	* Return the contents of a file as a String ("" if there is a problem)
+	* @param String path: Full path to text file
+	* @param String onNull: [opt] String to return in the case of error
 	*/
-	public static String readFile(String path) {
+	public static String readFile(String path) { return readFile(path, ""); }
+	public static String readFile(String path, String onNull) {
 		String rtn = "";
 		try(BufferedReader br = new BufferedReader(new FileReader(path))){
 			StringBuilder sb = new StringBuilder();
@@ -39,7 +42,7 @@ public final class EZFile {
 			rtn = sb.toString();
 System.out.println(rtn); //TODO: delete after testing
 		} catch (Exception e) {
-			//Do nothing, as rtn is already ""
+			rtn = onNull;
 		}
 
 		return rtn;

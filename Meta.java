@@ -36,6 +36,8 @@ public final class Meta {
 	public static final String DIR_SCREEN  = "/screen";
 	public static final String DIR_USER    = "/user";
 	public static final String FILE_ALL    = "/all.tsv";
+	public static final String HTML_A      = "<html><body>";
+	public static final String HTML_Z      = "</body></html>";
 	public static final String LOG_ACC     = "/log/access.log";
 	public static final String LOG_ERR     = "/log/error.log";
 	public static final String LOG_INST    = "/log/install.log";

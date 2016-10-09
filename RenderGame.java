@@ -90,8 +90,6 @@ public class RenderGame extends JPanel {
 			type.setText(game.getTypeName());
 			year.setText(y);
 			yearP.setText(yp);
-
-System.out.println("Game set to: " + game.getName() + " (" + game.getTypeName() + ")");
 		}
 
 		repaint(); //TODO: do this? Or let JFrame do it?

@@ -5,9 +5,6 @@ import java.io.*;
 */
 public class Game {
 	/********* Constants *********/
-	public static final String DEF_DIR    = "/usr/share/games";
-	public static final String DEF_ICON  = "/_icon";
-	public static final String DEF_SCREEN = "/_screen";
 	public static final int TYPE_BASH =   0;
 	public static final int TYPE_X11  =   1;
 	public static final int TYPE_DOS  =   2;
@@ -130,26 +127,6 @@ public class Game {
 	*/
 	public Game() {
 	}
-/*
-	public Game(String conf) throws Exception {
-		//Fetch Config File
-		this.conf = conf;
-		try(BufferedReader br = new BufferedReader(new FileReader(conf))){
-			StringBuilder sb = new StringBuilder();
-			String line = br.readLine();
-			while (line != null) {
-				sb.append(line);
-				sb.append(System.lineSeparator());
-				line = br.readLine();
-			}
-			conf = sb.toString();
-System.out.println(conf);
-		}
-		//Parse Config & Populate Class Variables
-		; //TODO
-//TODO: Throw Error here if file is invalid (output it elegantly in Browser)
-	}
-*/
 
 	/**
 	* Outputs the meta data for a Game
