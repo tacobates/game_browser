@@ -222,12 +222,6 @@ int max = 3; //TODO: get real max
 		loadBrowser();
 System.out.println("Go to page: " + Integer.toString(currPage));
 		//TODO: alter textbox to have value of currPage
-/*
-		for (int i = 0; i < meta.PAGE_SIZE; ++i)
-			rows[i] = new RenderBrowse(this);
-		for (int i = 0; i < rows.length; ++i)
-			pBrowse.add(rows[i]);
-*/
 	}
 	private void pageUp()   { page(currPage + 1); }
 	private void pageDown() { page(currPage - 1); }
