@@ -41,7 +41,7 @@ public class Game {
 
 	/********* Variables *********/
 	private boolean support = false;
-	private double rating   = 5;
+	private double rating   = 0;
 	private double userRate = 0;
 	private int id = 0;
 	private int type;

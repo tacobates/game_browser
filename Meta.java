@@ -184,7 +184,10 @@ public final class Meta {
 		ArrayList<Game> rtn = new ArrayList();
 		int start = page * PAGE_SIZE;
 		for (int i = start; i < start + PAGE_SIZE; ++i) {
-			rtn.add(all.get(i));
+			if (i < all.size())
+				rtn.add(all.get(i));
+			else
+				rtn.add(new Game());
 			//TODO: wouldn't be pulling from "all" but from filtered ID set 
 				//TODO: use pointers to prevent sotring too many objects
 		}

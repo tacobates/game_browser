@@ -36,11 +36,15 @@ public class RenderBrowse extends RenderGame {
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
+				if (game.getName() == null)
+					return; //Do nothing for empty games
 				browser.setDetailGame(game); //TODO: something like this
 				browser.card(2);
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
+				if (game.getName() == null)
+					return; //Do nothing for empty games
 				setBackground(cBlue);
 				repaint();
 			}
@@ -85,7 +89,9 @@ public class RenderBrowse extends RenderGame {
 		String p = meta.getDirRoot() + meta.DIR_ICON + "/";
 		String p2 = p + Integer.toString(game.getID()) + ".png";
 		File f = new File(p2);
-		if (f.exists())
+		if (game.getName() == null)
+			icon.setIcon(new ImageIcon()); //Blank icon
+		else if (f.exists())
 			icon.setIcon(new ImageIcon(p2));
 		else //No icon
 			icon.setIcon(new ImageIcon(p + "0.png"));

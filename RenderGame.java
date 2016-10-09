@@ -66,21 +66,33 @@ public class RenderGame extends JPanel {
 	* Refreshes the GUI elements to display current Game data
 	*/
 	public void refreshGUI() {
-		//TODO: make legit
-		descrip.setText(game.getDescription());
-		genre.setText(game.getGenre());
-		String y = Integer.toString(game.getYear());
-		String yp = "(" + y + ")";
-		name.setText(game.getName());
-		nameY.setText(game.getName() + " " + yp);
-		numP.setText(Integer.toString(game.getNumPlayers()));
-		rating.setText(Double.toString(game.getRating()));
+		if (game.getName() == null){
+			descrip.setText("");
+			genre.setText("");
+			name.setText("");
+			nameY.setText("");
+			numP.setText("");
+			rating.setText("");
+			type.setText("");
+			year.setText("");
+			yearP.setText("");
+		} else {
+			descrip.setText(game.getDescription());
+			genre.setText(game.getGenre());
+			String y = Integer.toString(game.getYear());
+			String yp = "(" + y + ")";
+			name.setText(game.getName());
+			nameY.setText(game.getName() + " " + yp);
+			numP.setText(Integer.toString(game.getNumPlayers()));
+			rating.setText(Double.toString(game.getRating()));
 //TODO: precision 1 on Double???
-		type.setText(game.getTypeName());
-		year.setText(y);
-		yearP.setText(yp);
+//TODO: pictographic rating
+			type.setText(game.getTypeName());
+			year.setText(y);
+			yearP.setText(yp);
 
 System.out.println("Game set to: " + game.getName() + " (" + game.getTypeName() + ")");
+		}
 
 		repaint(); //TODO: do this? Or let JFrame do it?
 //TODO: JFrame Browser will handle pack() after it sets all of our Game objs

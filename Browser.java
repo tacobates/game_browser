@@ -6,11 +6,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Point;
 
 import java.io.*;
+import java.net.URL;
 import java.nio.*;
 import java.nio.file.*;
 import java.util.*;
@@ -26,14 +29,28 @@ public class Browser extends JFrame {
 //TODO: replace above with reference to Meta.getConfDir()
 
 	/********* Variables *********/
+	private int currPage = 0;
+
 	private Dimension dSize;  //Size of Window as a whole
 	private Dimension dSize2; //Size of Body (minus header, borders)
 
+	private JLabel iAbout;
+	private JLabel iHome;
+	private JLabel iSearch;
+	private JLabel iSync;
+	private JLabel iNext;
+	private JLabel iPrev;
 	private JLabel lLoad;
 
 	private JPanel cards;
+	private JPanel pAbout;
+	private JPanel pBtns1;
+	private JPanel pBtns2;
 	private JPanel pBrowse;
+	private JPanel pControl;
 	private JPanel pLoad;
+	private JPanel pSearch;
+	private JPanel pSync;
 
 	private JScrollPane browseScroll;
 	private JScrollPane detailScroll;
@@ -131,8 +148,15 @@ public class Browser extends JFrame {
 		pack();
 		setVisible(true);
 
-		//Browser Pane
-		initBrowser();
+		initBrowser();  //Browser Pane
+		initControls(); //Control Pane
+		initSearch();   //Search Pane
+		initSync();     //Sync Pane
+		initAbout();    //About Pane
+
+		JPanel wrapBrowse = new JPanel(new BorderLayout());
+		wrapBrowse.add(pControl, BorderLayout.NORTH);
+		wrapBrowse.add(pBrowse, BorderLayout.CENTER);
 
 		//Details Pane
 		pDetail = new RenderDetail(this);
@@ -140,13 +164,16 @@ public class Browser extends JFrame {
 //TODO: display pControls ABOVE browseScroll
 //TODO: add padding to shrink browseScroll
 		//Scroll Panes for each Card
-		browseScroll = new JScrollPane(pBrowse);
+		browseScroll = new JScrollPane(wrapBrowse);
 		detailScroll = new JScrollPane(pDetail);
 		detailScroll.setBorder(BorderFactory.createEmptyBorder());
 
 		//Add the Cards & place in Content Pane
 		cards.add("1", browseScroll);
 		cards.add("2", detailScroll);
+		cards.add("3", pSearch);
+		cards.add("4", pSync);
+		cards.add("5", pAbout);
 
 		card(1);
 		revalidate(); //Try to force Gif to display
@@ -181,6 +208,32 @@ public class Browser extends JFrame {
 	}
 
 	/**
+	* Go to specified page number (if possible)
+	* @param int n: the page number to go to, if in bounds
+	*/
+	private void page(int n) {
+int max = 3; //TODO: get real max
+		if (n < 0)
+			n = max;
+		else if (n > max)
+			n = 0;
+		
+		currPage = n;
+		loadBrowser();
+System.out.println("Go to page: " + Integer.toString(currPage));
+		//TODO: alter textbox to have value of currPage
+/*
+		for (int i = 0; i < meta.PAGE_SIZE; ++i)
+			rows[i] = new RenderBrowse(this);
+		for (int i = 0; i < rows.length; ++i)
+			pBrowse.add(rows[i]);
+*/
+	}
+	private void pageUp()   { page(currPage + 1); }
+	private void pageDown() { page(currPage - 1); }
+//TODO: make key listeners that are actually bound to pageUp & pageDown???
+
+	/**
 	* Sets up the RenderGame elements for use & reuse
 	*/
 	private void initBrowser() {
@@ -194,17 +247,141 @@ public class Browser extends JFrame {
 	}
 
 	/**
+	* Sets up the Control panel for Searching & Filtering, Paging, and About
+	*/
+	private void initControls() {
+		pControl = new JPanel(new BorderLayout());
+		pBtns1 = new JPanel(new GridLayout(1,4,7,0));
+		pBtns2 = new JPanel(new GridLayout(1,3,3,0));
+
+		iAbout = makeIcon("/img/info.gif");
+		iHome = makeIcon("/img/home.gif");
+		iNext = makeIcon("/img/forward.gif");
+		iPrev = makeIcon("/img/back.gif");
+		iSearch = makeIcon("/img/search.gif");
+		iSync = makeIcon("/img/refresh.gif");
+
+		pBtns1.add(iHome);
+		pBtns1.add(iSearch);
+		pBtns1.add(iSync);
+		pBtns1.add(iAbout);
+
+		pBtns2.add(iPrev);
+		//pBtns2.add(); //TODO: add text box for typing
+		pBtns2.add(iNext);
+
+		pControl.add(pBtns1, BorderLayout.WEST);
+		pControl.add(pBtns2, BorderLayout.EAST);
+
+		//Action Listeners for all items in pControl
+		iHome.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				//TODO: clear search/filter criteria
+				card(1);
+			}
+		});
+		iSearch.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) { card(3); }
+		});
+		iSync.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+System.out.println("TODO: JDialog to confirm, then card(4) to watch progress");
+				card(4);
+			}
+		});
+		iAbout.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) { card(5); }
+		});
+		iPrev.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) { pageDown(); }
+		});
+		iNext.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) { pageUp(); }
+		});
+	}
+
+	/**
+	* Sets up the Search panel
+	*/
+	private void initSearch() {
+		JLabel home = makeIcon("/img/home.gif");
+		pSearch = new JPanel();
+
+JLabel temp = new JLabel("TODO: actually make a Search Pane");
+
+		pSearch.add(home);
+		pSearch.add(temp);
+
+		home.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) { card(1); }
+		});
+	}
+
+	/**
+	* Sets up the Sync panel
+	*/
+	private void initSync() {
+		JLabel home = makeIcon("/img/home.gif");
+		pSync = new JPanel();
+
+JLabel temp = new JLabel("TODO: actually make a Sync Pane");
+
+		pSync.add(home);
+		pSync.add(temp);
+
+		home.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) { card(1); }
+		});
+	}
+
+	/**
+	* Sets up the About panel
+	*/
+	private void initAbout() {
+		JLabel home = makeIcon("/img/home.gif");
+		pAbout = new JPanel();
+
+JLabel temp = new JLabel("TODO: actually make an About Pane");
+
+		pAbout.add(home);
+		pAbout.add(temp);
+
+		home.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) { card(1); }
+		});
+	}
+
+	/**
 	* Scrapes directory to get Game data
 	*/
 	private void loadBrowser() {
 //TODO: apply filters/sorts to meta
-		int page = 0; //first page (TODO: where to pass in other pages?)
-		ArrayList<Game> games = meta.getGames(page);
+		ArrayList<Game> games = meta.getGames(currPage);
 		for (int i = 0; i < games.size(); ++i)
 			rows[i].setGame(games.get(i));
 //TODO: repaint???
 	}
 
+	/**
+	* Makes a JLabel for the spcified icon
+	* @param src: local path to icon
+	*/
+	private JLabel makeIcon(String src) {
+		URL u = this.getClass().getResource(src);
+		ImageIcon i = new ImageIcon(u);
+		JLabel rtn = new JLabel(i);
+		rtn.setPreferredSize(new Dimension(24, 24));
+		return rtn;
+	}
 
 
 	/**
