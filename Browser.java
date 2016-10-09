@@ -137,6 +137,8 @@ public class Browser extends JFrame {
 		//Details Pane
 		pDetail = new RenderDetail(this);
 
+//TODO: display pControls ABOVE browseScroll
+//TODO: add padding to shrink browseScroll
 		//Scroll Panes for each Card
 		browseScroll = new JScrollPane(pBrowse);
 		detailScroll = new JScrollPane(pDetail);

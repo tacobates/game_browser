@@ -11,7 +11,7 @@ public final class Meta {
 	public static final int CARD_GAP_H     = 2;
 	public static final int CARD_GAP_V     = 0;
 	public static final int DEF_H          = 600;
-	public static final int DEF_W          = 800;
+	public static final int DEF_W          = 700;
 	public static final int GIF_H          = 200;
 	public static final int GIF_W          = 480;
 	public static final int I_SUPPORT      = 0;

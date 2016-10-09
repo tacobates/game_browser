@@ -1,6 +1,6 @@
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -36,7 +36,6 @@ public class RenderBrowse extends RenderGame {
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-System.out.println("Show details for "+ game.getName());
 				browser.setDetailGame(game); //TODO: something like this
 				browser.card(2);
 			}
@@ -58,19 +57,24 @@ System.out.println("Show details for "+ game.getName());
 	*/
 	@Override
 	public void initLayout() {
-		setLayout(new GridLayout(1,7,8,0));
-		//name.setFont(name.getFont().deriveFont(22.0f));
-		//year.setHorizontalAlignment(SwingConstants.CENTER);
-		//year.setAlignmentX(CENTER_ALIGNMENT);
+		setLayout(new GridLayout(1,2));
+		name.setFont(name.getFont().deriveFont(14.0f));
+		yearP.setFont(name.getFont().deriveFont(14.0f));
 
 		icon = new JLabel();
-		add(icon);
-		add(name);
-		add(year);
-		add(type);
-		add(genre);
-		add(numP);
-		add(rating);
+		JPanel p1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		p1.add(icon);
+		p1.add(name);
+		p1.add(yearP);
+
+		JPanel p2 = new JPanel(new GridLayout(1,2));
+		p2.add(type);
+		p2.add(genre);
+		p2.add(numP);
+		p2.add(rating);
+
+		add(p1);
+		add(p2);
 	}
 
 	/**

@@ -32,6 +32,7 @@ public class RenderGame extends JPanel {
 	protected JLabel rating = new JLabel(); //TODO: switch to pictoral represent
 	protected JLabel type = new JLabel();
 	protected JLabel year = new JLabel();
+	protected JLabel yearP = new JLabel();
 	protected Meta meta;
 
 	/********* Getters *********/
@@ -69,13 +70,15 @@ public class RenderGame extends JPanel {
 		descrip.setText(game.getDescription());
 		genre.setText(game.getGenre());
 		String y = Integer.toString(game.getYear());
+		String yp = "(" + y + ")";
 		name.setText(game.getName());
-		nameY.setText(game.getName() + " (" + y + ")");
+		nameY.setText(game.getName() + " " + yp);
 		numP.setText(Integer.toString(game.getNumPlayers()));
 		rating.setText(Double.toString(game.getRating()));
 //TODO: precision 1 on Double???
 		type.setText(game.getTypeName());
 		year.setText(y);
+		yearP.setText(yp);
 
 System.out.println("Game set to: " + game.getName() + " (" + game.getTypeName() + ")");
 
