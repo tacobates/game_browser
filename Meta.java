@@ -29,7 +29,6 @@ public final class Meta {
 	public static final int PAD_W          = 6;  //size of border
 	public static final int PAD_W2         = 25; //size of scroll bar
 	public static final int PAGE_SIZE      = 12;
-	public static final String SEP         = "/";
 	public static final String DIR_CONF    = "/detail";
 	public static final String DIR_ICON    = "/icon";
 	public static final String DIR_LOG     = "/log";
@@ -41,6 +40,8 @@ public final class Meta {
 	public static final String LOG_ACC     = "/log/access.log";
 	public static final String LOG_ERR     = "/log/error.log";
 	public static final String LOG_INST    = "/log/install.log";
+	public static final String PAGE        = "Page ";
+	public static final String SEP         = "/";
 	public static final String TITLE       = "Game Browser";
 	public static final String TITLE2      = "Game Details";
 

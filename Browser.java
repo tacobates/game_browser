@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.FlowLayout;
@@ -54,6 +55,8 @@ public class Browser extends JFrame {
 
 	private JScrollPane browseScroll;
 	private JScrollPane detailScroll;
+
+	private JTextField tPage;
 
 	private List<Game> games;
 
@@ -219,8 +222,7 @@ int max = 3; //TODO: get real max
 		
 		currPage = n;
 		loadBrowser();
-System.out.println("Go to page: " + Integer.toString(currPage));
-		//TODO: alter textbox to have value of currPage
+		tPage.setText(meta.PAGE + Integer.toString(n + 1));
 	}
 	private void pageUp()   { page(currPage + 1); }
 	private void pageDown() { page(currPage - 1); }
@@ -247,6 +249,8 @@ System.out.println("Go to page: " + Integer.toString(currPage));
 		pBtns1 = new JPanel(new GridLayout(1,4,7,0));
 		pBtns2 = new JPanel(new GridLayout(1,3,3,0));
 
+		tPage = new JTextField(meta.PAGE + "1", 5); //5 columns wide
+
 		iAbout = makeIcon("/img/info.gif");
 		iHome = makeIcon("/img/home.gif");
 		iNext = makeIcon("/img/forward.gif");
@@ -260,7 +264,7 @@ System.out.println("Go to page: " + Integer.toString(currPage));
 		pBtns1.add(iAbout);
 
 		pBtns2.add(iPrev);
-		//pBtns2.add(); //TODO: add text box for typing
+		pBtns2.add(tPage);
 		pBtns2.add(iNext);
 
 		pControl.add(pBtns1, BorderLayout.WEST);
@@ -296,6 +300,15 @@ System.out.println("TODO: JDialog to confirm, then card(4) to watch progress");
 		iNext.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) { pageUp(); }
+		});
+		tPage.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e){ //Happens on enter
+				//Only get the numbers
+				String s = e.getActionCommand().replaceAll("\\D","");
+				if (s.length() > 0)
+					page(Integer.parseInt(s) - 1); //Zero based
+			}
 		});
 	}
 
