@@ -34,6 +34,7 @@ public class Browser extends JFrame {
 
 	private Dimension dSize;  //Size of Window as a whole
 	private Dimension dSize2; //Size of Body (minus header, borders)
+	private Dimension dSize3; //dSize2 - another header (pControl)
 
 	private JLabel iAbout;
 	private JLabel iHome;
@@ -52,6 +53,7 @@ public class Browser extends JFrame {
 	private JPanel pLoad;
 	private JPanel pSearch;
 	private JPanel pSync;
+	private JPanel wrapBrowse;
 
 	private JScrollPane browseScroll;
 	private JScrollPane detailScroll;
@@ -109,10 +111,11 @@ public class Browser extends JFrame {
 		int h = dSize.height;
 		int w = dSize.width;
 		dSize2 = new Dimension(w - meta.PAD_W, h - meta.PAD_H);
-		browseScroll.setSize(dSize2);
-		browseScroll.setPreferredSize(dSize2);
+		dSize3 = new Dimension(w - meta.PAD_W, h - meta.PAD_H - meta.PAD_H);
 		cards.setSize(dSize2);
 		cards.setPreferredSize(dSize2);
+		browseScroll.setSize(dSize3);
+		browseScroll.setPreferredSize(dSize3);
 
 		revalidate(); //Redraw the new sizes immediately
 	}
@@ -156,22 +159,23 @@ public class Browser extends JFrame {
 		initSync();     //Sync Pane
 		initAbout();    //About Pane
 
-		JPanel wrapBrowse = new JPanel(new BorderLayout());
-		wrapBrowse.add(pControl, BorderLayout.NORTH);
-		wrapBrowse.add(pBrowse, BorderLayout.CENTER);
-
 		//Details Pane
 		pDetail = new RenderDetail(this);
 
 //TODO: display pControls ABOVE browseScroll
 //TODO: add padding to shrink browseScroll
 		//Scroll Panes for each Card
-		browseScroll = new JScrollPane(wrapBrowse);
+		browseScroll = new JScrollPane(pBrowse);
 		detailScroll = new JScrollPane(pDetail);
 		detailScroll.setBorder(BorderFactory.createEmptyBorder());
 
+		//So controls don't scroll off page
+		wrapBrowse = new JPanel(new BorderLayout());
+		wrapBrowse.add(pControl, BorderLayout.NORTH);
+		wrapBrowse.add(browseScroll, BorderLayout.CENTER);
+
 		//Add the Cards & place in Content Pane
-		cards.add("1", browseScroll);
+		cards.add("1", wrapBrowse);
 		cards.add("2", detailScroll);
 		cards.add("3", pSearch);
 		cards.add("4", pSync);
