@@ -386,11 +386,12 @@ JLabel temp = new JLabel("TODO: actually make an About Pane");
 	* @param String c: [opt] the color prefix ("o" for Orange or "b" for Blue)
 	* @param int size: [opt] height in Pizels of the desired image (32 or 24)
 	*/
-	public ImageIcon makeStar(double r){return makeStar(r,"o",32);}
-	public ImageIcon makeStar(double r, String c){return makeStar(r,c,32);}
+	public ImageIcon makeStar(double r){return makeStar(r,"o",24);}
+	public ImageIcon makeStar(double r, String c){return makeStar(r,c,24);}
 	public ImageIcon makeStar(double r, String c, int size) {
+		String px = Integer.toString(size);
 		String rounded = String.format("%.1f", r);
-		String src = "/img/stars/32/" + c + rounded + ".png";
+		String src = "/img/stars/" + px + "/" + c + rounded + ".png";
 		URL u = this.getClass().getResource(src);
 		ImageIcon rtn = new ImageIcon(u);
 		return rtn;
