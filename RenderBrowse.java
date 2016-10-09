@@ -101,6 +101,9 @@ public class RenderBrowse extends RenderGame {
 		else //No icon
 			icon.setIcon(new ImageIcon(p + "0.png"));
 
+		numPlayer.setHorizontalAlignment(SwingConstants.RIGHT);
+		stars.setHorizontalAlignment(SwingConstants.CENTER);
+
 		super.refreshGUI(); //at end to trigger repaint when done
 	}
 

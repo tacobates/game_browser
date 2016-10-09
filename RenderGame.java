@@ -91,7 +91,7 @@ public class RenderGame extends JPanel {
 			name.setText(game.getName());
 			nameY.setText(game.getName() + " " + yp);
 			numP.setText(np);
-			numPlayer.setText(np + " player");
+			numPlayer.setText(np + " player  ");
 			rating.setText(Double.toString(game.getRating()));
 			stars.setIcon(browser.makeStar(game.getRating()));
 			type.setText(game.getTypeName());
@@ -99,7 +99,6 @@ public class RenderGame extends JPanel {
 			year.setText(y);
 			yearP.setText(yp);
 		}
-		stars.setHorizontalAlignment(SwingConstants.CENTER);
 
 		repaint(); //TODO: do this? Or let JFrame do it?
 //TODO: JFrame Browser will handle pack() after it sets all of our Game objs
