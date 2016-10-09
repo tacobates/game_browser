@@ -29,8 +29,11 @@ public class RenderGame extends JPanel {
 	protected JLabel name = new JLabel();
 	protected JLabel nameY = new JLabel();
 	protected JLabel numP = new JLabel();
-	protected JLabel rating = new JLabel(); //TODO: switch to pictoral represent
+	protected JLabel numPlayer = new JLabel();
+	protected JLabel rating = new JLabel();
+	protected JLabel stars = new JLabel(); //Pictoral representation of rating
 	protected JLabel type = new JLabel();
+	protected JLabel typeG = new JLabel();
 	protected JLabel year = new JLabel();
 	protected JLabel yearP = new JLabel();
 	protected Meta meta;
@@ -72,25 +75,31 @@ public class RenderGame extends JPanel {
 			name.setText("");
 			nameY.setText("");
 			numP.setText("");
+			numPlayer.setText("");
 			rating.setText("");
+			stars.setIcon(new ImageIcon());
 			type.setText("");
+			typeG.setText("");
 			year.setText("");
 			yearP.setText("");
 		} else {
 			descrip.setText(game.getDescription());
 			genre.setText(game.getGenre());
+			String np = Integer.toString(game.getNumPlayers());
 			String y = Integer.toString(game.getYear());
 			String yp = "(" + y + ")";
 			name.setText(game.getName());
 			nameY.setText(game.getName() + " " + yp);
-			numP.setText(Integer.toString(game.getNumPlayers()));
+			numP.setText(np);
+			numPlayer.setText(np + " player");
 			rating.setText(Double.toString(game.getRating()));
-//TODO: precision 1 on Double???
-//TODO: pictographic rating
+			stars.setIcon(browser.makeStar(game.getRating()));
 			type.setText(game.getTypeName());
+			typeG.setText(game.getTypeName() + " / " + game.getGenre());
 			year.setText(y);
 			yearP.setText(yp);
 		}
+		stars.setHorizontalAlignment(SwingConstants.CENTER);
 
 		repaint(); //TODO: do this? Or let JFrame do it?
 //TODO: JFrame Browser will handle pack() after it sets all of our Game objs

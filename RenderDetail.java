@@ -135,7 +135,8 @@ public class RenderDetail extends RenderGame {
 		pMeta.add(lNumP);
 		pMeta.add(numP);
 		pMeta.add(lRate);
-		pMeta.add(rating);
+//		pMeta.add(rating);
+pMeta.add(stars);
 
 		pMiddle.add(pMeta, BorderLayout.WEST);
 		pMiddle.add(descrip, BorderLayout.CENTER);

@@ -367,12 +367,32 @@ JLabel temp = new JLabel("TODO: actually make an About Pane");
 	/**
 	* Makes a JLabel for the spcified icon
 	* @param src: local path to icon
+	* @param w: [opt] width of icon in pixels (assume 24x24 for Java Icons)
+	* @param h: [opt] height of icon in pixels
 	*/
-	private JLabel makeIcon(String src) {
+	public JLabel makeIcon(String src) { return makeIcon(src,24,24); }
+	public JLabel makeIcon(String src, int w) { return makeIcon(src,w,w); }
+	public JLabel makeIcon(String src, int w, int h) {
 		URL u = this.getClass().getResource(src);
 		ImageIcon i = new ImageIcon(u);
 		JLabel rtn = new JLabel(i);
-		rtn.setPreferredSize(new Dimension(24, 24));
+		rtn.setPreferredSize(new Dimension(w, h));
+		return rtn;
+	}
+
+	/**
+	* Makes a JLabel with makeIcon() for our star rating icons
+	* @param double r: the rating of the item (probably a Game)
+	* @param String c: [opt] the color prefix ("o" for Orange or "b" for Blue)
+	* @param int size: [opt] height in Pizels of the desired image (32 or 24)
+	*/
+	public ImageIcon makeStar(double r){return makeStar(r,"o",32);}
+	public ImageIcon makeStar(double r, String c){return makeStar(r,c,32);}
+	public ImageIcon makeStar(double r, String c, int size) {
+		String rounded = String.format("%.1f", r);
+		String src = "/img/stars/32/" + c + rounded + ".png";
+		URL u = this.getClass().getResource(src);
+		ImageIcon rtn = new ImageIcon(u);
 		return rtn;
 	}
 }
