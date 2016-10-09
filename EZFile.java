@@ -40,7 +40,6 @@ public final class EZFile {
 				line = br.readLine();
 			}
 			rtn = sb.toString();
-System.out.println(rtn); //TODO: delete after testing
 		} catch (Exception e) {
 			rtn = onNull;
 		}
@@ -49,29 +48,37 @@ System.out.println(rtn); //TODO: delete after testing
 	}
 
 	/**
-	* Assume no skipping of first TSV row
-	*/
-	public static ArrayList readTSV(String path) {
-		return readTSV(path, false);
-	}
-	/**
 	* Returns the contents of a TSV file as a List of String[]
+	* @param String path: Full path of file to read
+	* @param int skip: [opt] number of rows to skip (header rows)
 	*/
-	public static ArrayList readTSV(String path, boolean skipRow1) {
+	public static ArrayList readTSV(String path) {return readTSV(path, 0);}
+	public static ArrayList readTSV(String path, int skip) {
+		int i = 1;
 		ArrayList<String[]> rtn = new ArrayList();
 		try(BufferedReader br = new BufferedReader(new FileReader(path))){
 			String line = br.readLine();
 			while (line != null) {
-				if (line.length() > 1 && !skipRow1) { //Skip lines with no data
+				if (line.length() > 1 && i++ > skip) { //Skip lines with no data
 					rtn.add(line.split("\\t"));
 				}
 				line = br.readLine();
-				skipRow1 = false; //Whether or not it was ever true
 			}
 		} catch (Exception e) {
 		}
 
 		return rtn;
+	}
+
+	/**
+	* Returns true if the path exists, false otherwise
+	* @param String path: Full path of file to read
+	*/
+	public static boolean pathExists(String path) {
+		File f = new File(path);
+		if (f.exists())
+			return true;
+		return false;
 	}
 }
 

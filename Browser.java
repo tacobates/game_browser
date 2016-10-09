@@ -105,7 +105,6 @@ public class Browser extends JFrame {
 	private void doResize() {
 		int h = dSize.height;
 		int w = dSize.width;
-//System.out.println("Resizing " + w + " x " + h);
 		dSize2 = new Dimension(w - meta.PAD_W, h - meta.PAD_H);
 		browseScroll.setSize(dSize2);
 		browseScroll.setPreferredSize(dSize2);
@@ -376,39 +375,5 @@ JLabel temp = new JLabel("TODO: actually make an About Pane");
 		rtn.setPreferredSize(new Dimension(24, 24));
 		return rtn;
 	}
-
-
-	/**
-	* Scrapes directory to get Game data
-	*/
-/*
-	private void fetchGameConf() {
-		games = new ArrayList<>();
-		try (DirectoryStream<Path> directoryStream =
-			Files.newDirectoryStream(Paths.get(_CONF_DIR))) {
-			for (Path path : directoryStream) {
-				String s = path.toString();
-				if (s.endsWith(".conf") && !s.startsWith(".")) {
-					games.add(new Game(path.toString()));
-				}
-			}
-		} catch (IOException ex) {
-			System.out.println("Unable to parse file");
-			//TODO: get the file???
-		} catch (Exception ex) {
-			System.out.println("Invalid conf file");
-			//TODO: get the file???
-		}
-
-for (int i = 0; i < games.size(); ++i) {
-System.out.println(games.get(i));
-System.out.println("===================");
-}
-
-//TODO: pBrowse.setLayout(new GridLayout(X, 1)); //where X is # games
-	}
-*/
-
-
 }
 

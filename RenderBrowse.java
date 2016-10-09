@@ -86,12 +86,12 @@ public class RenderBrowse extends RenderGame {
 	*/
 	@Override
 	public void refreshGUI() {
+		EZFile ez = EZFile.getInstance();
 		String p = meta.getDirRoot() + meta.DIR_ICON + "/";
 		String p2 = p + Integer.toString(game.getID()) + ".png";
-		File f = new File(p2);
 		if (game.getName() == null)
 			icon.setIcon(new ImageIcon()); //Blank icon
-		else if (f.exists())
+		else if (ez.pathExists(p2))
 			icon.setIcon(new ImageIcon(p2));
 		else //No icon
 			icon.setIcon(new ImageIcon(p + "0.png"));

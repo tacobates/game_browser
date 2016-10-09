@@ -94,7 +94,6 @@ public final class Meta {
 			instance = new Meta();
 			parseConfig();
 		}
-//System.out.println(toStringStatic());
 		return instance;
 	}
 
@@ -109,11 +108,11 @@ public final class Meta {
 
 		//Get Basic Game Data (everything sortable & filterable)
 //EZFile ez = EZFile.getInstance();
-//all = ez.readTSV(dirRoot + FILE_ALL, true);
+//all = ez.readTSV(dirRoot + FILE_ALL, 1);
 //String[] t = all.get(0);
-//System.out.println(t[0] + ", " + t[1] +", "+ t[2] +", "+ t[3] +", "+
-//	t[4] +", "+ t[5] +", "+ t[6] +", "+ t[7]);
 		//TODO: look for community info, but deal with it if not synced
+
+		//Not using EZFile for performance (loop once, rather than twice)
 		all = new ArrayList();
 		boolean skipRow1 = true;
 		String path = dirRoot + FILE_ALL;
