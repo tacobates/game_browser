@@ -265,7 +265,6 @@ public final class Meta {
 		String y2) {
 
 		Set<Map.Entry<String,Integer>> entries;
-//TODO: figure out how to sort backward
 		switch (sort) {
 			case SORT_NAME0: entries = sortedName.entrySet(); break;
 			case SORT_NAME1: entries = sortedName2.entrySet(); break;
@@ -298,6 +297,13 @@ public final class Meta {
 			}
 			if (g.getRating() < minRate)
 				continue; //Failed Match - Skip it
+
+			//Check Num Players
+			nump = nump.replaceAll("\\D", "");
+			if (nump.length() > 0) {
+				if (g.getNumPlayers() < Integer.parseInt(nump))
+					continue; //Failed Match - Skip it
+			}
 
 			//do search last, as it's slowest & may be invalidated by others
 			//TODO: use search
