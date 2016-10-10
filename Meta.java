@@ -49,7 +49,14 @@ public final class Meta {
 //TODO: allow for multiple directories to be entered
 
 	/********* Variables *********/
-	private static ArrayList<Game> all;
+	private static ArrayList<Integer> gids;    //Filtered list of Game IDs
+	private static ArrayList<Integer> gidsAll; //Has ALL Game IDs
+
+	private static HashMap<Integer, Game> mapGames; //Stores all our Games
+	private static TreeMap<String, Integer> sortedName;
+	private static TreeMap<String, Integer> sortedRate; //Rate Desc + Name +ID
+	private static TreeMap<String, Integer> sortedYear; //Year + Name + ID
+
 	private static String dirRoot = "/usr/local/game_meta";
 	private static String dirBash = "/usr/share/games/bash";
 	private static String dirX11  = "/usr/share/games/x11";
@@ -108,24 +115,38 @@ public final class Meta {
 		user = System.getProperty("user.name");
 
 		//Get Basic Game Data (everything sortable & filterable)
-//EZFile ez = EZFile.getInstance();
-//all = ez.readTSV(dirRoot + FILE_ALL, 1);
-//String[] t = all.get(0);
-		//TODO: look for community info, but deal with it if not synced
-
-		//Not using EZFile for performance (loop once, rather than twice)
-		all = new ArrayList();
-		boolean skipRow1 = true;
+		int i = 1;
+		int skip = 1; //Rows to skip (like a header row)
+		gids = new ArrayList();
+		gidsAll = new ArrayList();
+		mapGames = new HashMap<Integer, Game>();
+		sortedName = new TreeMap<String, Integer>();
+		sortedRate = new TreeMap<String, Integer>();
+		sortedYear = new TreeMap<String, Integer>();
 		String path = dirRoot + FILE_ALL;
 		try(BufferedReader br = new BufferedReader(new FileReader(path))){
 			String line = br.readLine();
 			while (line != null) {
-				if (line.length() > 1 && !skipRow1) { //Skip lines with no data
-					all.add(createGame(line.split("\\t")));
+				if (line.length() > 1 && i++ > skip) { //Skip lines with no data
+					Game g = createGame(line.split("\\t"));
+					int id = g.getID();
+					String n = g.getName().toLowerCase();
+					String y = Integer.toString(g.getYear());
+					String r = String.format("%.2f", g.getRating());
+					mapGames.put(id, g);
+					sortedName.put(n, id);
+					sortedRate.put(r+n, id);
+					sortedYear.put(y+n, id);
+					gidsAll.add(id);
 				}
 				line = br.readLine();
-				skipRow1 = false; //Whether or not it was ever true
 			}
+
+//TODO: move to function for resorting
+//TODO: sort by whatever was sorted last time
+			//Default gids to Name Sorted list
+			for(Map.Entry<String,Integer> entry : sortedName.entrySet())
+				gids.add(entry.getValue());
 		} catch (Exception e) {
 		}
 
@@ -182,16 +203,14 @@ public final class Meta {
 	*/
 	public ArrayList<Game> getGames(int page) {
 		//TODO: apply filters/sort (get from pre-sorted)
-		int max = all.size();
+		int max = gids.size();
 		ArrayList<Game> rtn = new ArrayList();
 		int start = page * PAGE_SIZE;
 		for (int i = start; i < start + PAGE_SIZE; ++i) {
-			if (i < all.size())
-				rtn.add(all.get(i));
+			if (i < gids.size())
+				rtn.add(mapGames.get(gids.get(i)));
 			else
 				rtn.add(new Game());
-			//TODO: wouldn't be pulling from "all" but from filtered ID set 
-				//TODO: use pointers to prevent sotring too many objects
 		}
 		return rtn;
 	}
