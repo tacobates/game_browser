@@ -101,7 +101,7 @@ public class RenderDetail extends RenderGame {
 		play.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				//TODO: game.launch() ???
+				game.launch();
 			}
 		});
 		screenNext.addMouseListener(new MouseAdapter() {
@@ -223,12 +223,6 @@ public class RenderDetail extends RenderGame {
 
 		browser.revalidate();
 		browser.repaint();
-	}
-
-	public int launch() {
-		System.out.println("This type of game is not yet supported.");
-		return 0; //TODO: get and return the PID so we can track run time?
-//TODO: put in RenderGame and just delegate to Game.launch()
 	}
 }
 

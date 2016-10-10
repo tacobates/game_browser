@@ -7,9 +7,9 @@ public class GameDos extends Game {
 		setType(TYPE_DOS);
 	}
 
-	public int launch() {
+	public long launch() {
 		//TODO: launch specific to DOS
-		int pid = 1234; //TODO: get real pid for process tracking
+		long pid = -1; //TODO: get real pid for process tracking
 		return pid;
 	}
 }

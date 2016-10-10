@@ -134,11 +134,5 @@ public class RenderBrowse extends RenderGame {
 			getComponent(i).setBackground(c);
 		p2.setBackground(c);
 	}
-
-	public int launch() {
-		System.out.println("This type of game is not yet supported.");
-		return 0; //TODO: get and return the PID so we can track run time?
-//TODO: put in RenderGame and just delegate to Game.launch()
-	}
 }
 

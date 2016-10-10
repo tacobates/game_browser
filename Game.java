@@ -150,9 +150,9 @@ public class Game {
 //TODO: allow for filtering by type, rating, etc...
 
 
-	public int launch() {
+	public long launch() {
 		System.out.println("This type of game is not yet supported.");
-		return 0; //TODO: get and return the PID so we can track run time?
+		return -1; //TODO: get and return the PID so we can track run time?
 	}
 }
 
