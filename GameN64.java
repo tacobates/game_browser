@@ -5,5 +5,6 @@ public class GameN64 extends Game {
 	public GameN64() {
 		super();
 		setType(TYPE_N64);
+		setDir(meta.dirN64);
 	}
 }

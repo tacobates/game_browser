@@ -298,12 +298,12 @@ public class Browser extends JFrame {
 
 		tPage = new JTextField(meta.PAGE + "1", 5); //5 columns wide
 
-		iAbout = makeIcon("/img/info.gif");
-		iHome = makeIcon("/img/home.gif");
-		iNext = makeIcon("/img/forward.gif");
-		iPrev = makeIcon("/img/back.gif");
-		iSearch = makeIcon("/img/search.gif");
-		iSync = makeIcon("/img/refresh.gif");
+		iAbout = makeIconLabel("/img/info.gif");
+		iHome = makeIconLabel("/img/home.gif");
+		iNext = makeIconLabel("/img/forward.gif");
+		iPrev = makeIconLabel("/img/back.gif");
+		iSearch = makeIconLabel("/img/search.gif");
+		iSync = makeIconLabel("/img/refresh.gif");
 
 		pBtns1.add(iHome);
 		pBtns1.add(iSearch);
@@ -364,7 +364,7 @@ System.out.println("TODO: JDialog to confirm, then card(4) to watch progress");
 	*/
 	private void initSearch() {
 		pSearch = new JPanel(new BorderLayout());
-		JLabel home = makeIcon("/img/home.gif");
+		JLabel home = makeIconLabel("/img/home.gif");
 		JButton bApply = new JButton("Apply Filters");
 
 		cSort = new JComboBox<String>();
@@ -484,7 +484,7 @@ cSort.addItem(meta.SORT_NAME1); //TODO: Delete. Just for POC (not useful)
 	* Sets up the Sync panel
 	*/
 	private void initSync() {
-		JLabel home = makeIcon("/img/home.gif");
+		JLabel home = makeIconLabel("/img/home.gif");
 		pSync = new JPanel();
 
 JLabel temp = new JLabel("TODO: actually make a Sync Pane");
@@ -507,7 +507,7 @@ JLabel temp = new JLabel("TODO: actually make a Sync Pane");
 		String html = ez.readFile(p);
 //TODO: will ez.readFile work in JAR?
 		pAbout = new JPanel(new BorderLayout());
-		JLabel home = makeIcon("/img/home.gif");
+		JLabel home = makeIconLabel("/img/home.gif");
 		JLabel body = new JLabel(html);
 
 		JPanel top = new JPanel(new BorderLayout());
@@ -534,23 +534,30 @@ JLabel temp = new JLabel("TODO: actually make a Sync Pane");
 	}
 
 	/**
+	* Makes an ImageIcon for the spcified icon
+	* @param src: local path to icon
+	*/
+	public ImageIcon makeIcon(String src) {
+		URL u = this.getClass().getResource(src);
+		return new ImageIcon(u);
+	}
+
+	/**
 	* Makes a JLabel for the spcified icon
 	* @param src: local path to icon
 	* @param w: [opt] width of icon in pixels (assume 24x24 for Java Icons)
 	* @param h: [opt] height of icon in pixels
 	*/
-	public JLabel makeIcon(String src) { return makeIcon(src,24,24); }
-	public JLabel makeIcon(String src, int w) { return makeIcon(src,w,w); }
-	public JLabel makeIcon(String src, int w, int h) {
-		URL u = this.getClass().getResource(src);
-		ImageIcon i = new ImageIcon(u);
-		JLabel rtn = new JLabel(i);
+	public JLabel makeIconLabel(String src) { return makeIconLabel(src,24,24); }
+	public JLabel makeIconLabel(String src, int w) { return makeIconLabel(src,w,w); }
+	public JLabel makeIconLabel(String src, int w, int h) {
+		JLabel rtn = new JLabel(makeIcon(src));
 		rtn.setPreferredSize(new Dimension(w, h));
 		return rtn;
 	}
 
 	/**
-	* Makes a JLabel with makeIcon() for our star rating icons
+	* Makes a JLabel with makeIconLabel() for our star rating icons
 	* @param double r: the rating of the item (probably a Game)
 	* @param String c: [opt] the color prefix ("o" for Orange or "b" for Blue)
 	* @param int size: [opt] height in Pizels of the desired image (32 or 24)
@@ -561,9 +568,7 @@ JLabel temp = new JLabel("TODO: actually make a Sync Pane");
 		String px = Integer.toString(size);
 		String rounded = String.format("%.1f", r);
 		String src = "/img/stars/" + px + "/" + c + rounded + ".png";
-		URL u = this.getClass().getResource(src);
-		ImageIcon rtn = new ImageIcon(u);
-		return rtn;
+		return makeIcon(src);
 	}
 }
 

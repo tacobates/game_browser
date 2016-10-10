@@ -45,10 +45,11 @@ public class Game {
 	private int numPlayers;
 	private int numScreens;
 	private int year;
+	protected Meta meta;
 	private String conf; //Configuration file
 	private String cmd; //Special command required to launch?
 	private String description = "No Description";
-	private String dir;
+	protected String dir;
 	private String file;
 	private String genre;
 //TODO: make Icon an actual GUI element? or do in decorator?
@@ -126,6 +127,8 @@ public class Game {
 	* Creates an empty game for us to populate
 	*/
 	public Game() {
+		meta = Meta.getInstance();
+		setDir(meta.dirX11);
 	}
 
 	/**

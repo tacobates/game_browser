@@ -5,5 +5,6 @@ public class GameNes extends Game {
 	public GameNes() {
 		super();
 		setType(TYPE_NES);
+		setDir(meta.dirNes);
 	}
 }

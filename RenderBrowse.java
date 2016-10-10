@@ -101,7 +101,7 @@ public class RenderBrowse extends RenderGame {
 		else if (ez.pathExists(p2))
 			icon.setIcon(new ImageIcon(p2));
 		else //No icon
-			icon.setIcon(new ImageIcon(p + "0.png"));
+			icon.setIcon(browser.makeIcon("/img/no_icon.png"));
 
 		numPlayer.setHorizontalAlignment(SwingConstants.RIGHT);
 		stars.setHorizontalAlignment(SwingConstants.CENTER);

@@ -22,6 +22,7 @@ public final class Meta {
 	public static final int I_YEAR         = 5;
 	public static final int I_GENRE        = 6;
 	public static final int I_NAME         = 7;
+	public static final int I_FILE         = 8;
 	public static final int ICON_H         = 64;
 	public static final int ICON_PAD       = 10;
 	public static final int ICON_W         = 64;
@@ -92,21 +93,23 @@ public final class Meta {
 	private static TreeMap<String,  Integer> sortedYear; //Year + Name + ID
 	private static TreeMap<String,  Integer> sortedYear2;//Desc
 
-	private static String dirRoot = "/usr/local/game_meta";
-	private static String dirBash = "/usr/share/games/bash";
-	private static String dirX11  = "/usr/share/games/x11";
-	private static String dirDos  = "/usr/share/games/dos";
-	private static String dirNes  = "/usr/share/games/rom/nes";
-	private static String dirSnes = "/usr/share/games/rom/snes";
-	private static String dirN64  = "/usr/share/games/rom/n64";
-	private static String dirGC   = "/usr/share/games/rom/gc";
-	private static String dirWii  = "/usr/share/games/rom/wii";
-	private static String dirWU   = "/usr/share/games/rom/wu";
-	private static String dirNX   = "/usr/share/games/rom/nx";
-	private static String dirGB   = "/usr/share/games/rom/gb";
-	private static String dirGBA  = "/usr/share/games/rom/gba";
-	private static String dirPSX  = "/usr/share/games/rom/psx";
-	private static String user    = "no_user";
+	protected static String dirRoot = "/usr/local/game_meta";
+	protected static String dirBash = "/usr/games/";
+	protected static String dirX11  = "/usr/games/";
+	protected static String dirDos  = "/usr/games/dos";
+	protected static String dirNes  = "/usr/games/rom/nes";
+	protected static String dirSnes = "/usr/games/rom/snes";
+	protected static String dirN64  = "/usr/games/rom/n64";
+	protected static String dirGC   = "/usr/games/rom/gc";
+	protected static String dirWii  = "/usr/games/rom/wii";
+	protected static String dirWU   = "/usr/games/rom/wu";
+	protected static String dirNX   = "/usr/games/rom/nx";
+	protected static String dirGB   = "/usr/games/rom/gb";
+	protected static String dirGBA  = "/usr/games/rom/gba";
+	protected static String dirDS   = "/usr/games/rom/ds";
+	protected static String dirDS3  = "/usr/games/rom/ds3";
+	protected static String dirPSX  = "/usr/games/rom/psx";
+	protected static String user    = "no_user";
 
 	/********* Getters *********/ //TODO: !!!
 	public String getDirRoot()   { return dirRoot; }
@@ -212,6 +215,7 @@ public final class Meta {
 	* [5] - (int) Year released (may be blank)
 	* [6] - (String) Genre of game (first 4 chars)
 	* [7] - (String) Name of Game 
+	* [8] - (String) Filename for game 
 	*/
 	public static Game createGame(String[] x) {
 		Game g = null;
@@ -241,6 +245,8 @@ public final class Meta {
 		g.setRating(Double.parseDouble(x[I_RATE]));
 		g.setYear(Integer.parseInt(x[I_YEAR]));
 		g.setGenre(x[I_GENRE]);
+		if (x.length > I_FILE)
+			g.setFile(x[I_FILE]);
 		return g;
 	}
 

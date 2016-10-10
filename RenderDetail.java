@@ -99,8 +99,10 @@ public class RenderDetail extends RenderGame {
 			public void mouseClicked(MouseEvent e) { browser.card(1); }
 		});
 		play.addMouseListener(new MouseAdapter() {
-			@Override
+			public void mousePressed(MouseEvent e){play.setEnabled(false);}
+			public void mouseExited(MouseEvent e) {play.setEnabled(true);}
 			public void mouseClicked(MouseEvent e) {
+				play.setEnabled(false);
 				game.launch();
 			}
 		});
@@ -217,8 +219,9 @@ public class RenderDetail extends RenderGame {
 		//Image path
 		p += Integer.toString(screenI) + ".jpg";
 		if (max == 0) //Didn't have any screenshots
-			p = meta.getDirRoot() + meta.DIR_SCREEN + "/0.jpg";
-		img = new ImageIcon(p);
+			img = browser.makeIcon("/img/no_screen.jpg");
+		else
+			img = new ImageIcon(p);
 		lScreen.setIcon(img);
 
 		browser.revalidate();

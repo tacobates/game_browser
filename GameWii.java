@@ -5,5 +5,6 @@ public class GameWii extends Game {
 	public GameWii() {
 		super();
 		setType(TYPE_WII);
+		setDir(meta.dirWii);
 	}
 }

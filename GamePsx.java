@@ -5,5 +5,6 @@ public class GamePsx extends Game {
 	public GamePsx() {
 		super();
 		setType(TYPE_PSX);
+		setDir(meta.dirPSX);
 	}
 }

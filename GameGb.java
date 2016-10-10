@@ -5,5 +5,6 @@ public class GameGb extends Game {
 	public GameGb() {
 		super();
 		setType(TYPE_GB);
+		setDir(meta.dirGB);
 	}
 }

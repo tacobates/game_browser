@@ -5,5 +5,6 @@ public class GameDS extends Game {
 	public GameDS() {
 		super();
 		setType(TYPE_DS);
+		setDir(meta.dirDS);
 	}
 }

@@ -5,5 +5,6 @@ public class GameDS3 extends Game {
 	public GameDS3() {
 		super();
 		setType(TYPE_DS3);
+		setDir(meta.dirDS3);
 	}
 }

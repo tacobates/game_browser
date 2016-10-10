@@ -5,5 +5,6 @@ public class GameWU extends Game {
 	public GameWU() {
 		super();
 		setType(TYPE_WU);
+		setDir(meta.dirWU);
 	}
 }
