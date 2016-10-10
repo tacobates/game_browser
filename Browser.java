@@ -236,7 +236,7 @@ public class Browser extends JFrame {
 	* @param int n: the page number to go to, if in bounds
 	*/
 	private void page(int n) {
-int max = 3; //TODO: get real max
+		int max = meta.getMaxPageNum();
 		if (n < 0)
 			n = max;
 		else if (n > max)

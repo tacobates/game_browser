@@ -282,8 +282,34 @@ public final class Meta {
 		//Use that sorted list to loop through & check criteria
 		for(Map.Entry<String,Integer> entry : entries) {
 			int id = entry.getValue();
+			Game g = mapGames.get(id);
+
+			//TODO: fave & inst (not in data yet)
+
+			//Check rating
+			double minRate = 0.0;
+			switch (rate) {
+				case FILT_RATE45: minRate = 4.5; break;
+				case FILT_RATE4:  minRate = 4.0; break;
+				case FILT_RATE35: minRate = 3.5; break;
+				case FILT_RATE3:  minRate = 3.0; break;
+				case FILT_RATE25: minRate = 2.5; break;
+				default: break;
+			}
+			if (g.getRating() < minRate)
+				continue; //Failed Match - Skip it
+
+			//do search last, as it's slowest & may be invalidated by others
+			//TODO: use search
 gids.add(id);
 		}
+	}
+
+	/**
+	* Based on PAGE_SIZE & filtered gids, how many pages are there
+	*/
+	public int getMaxPageNum() {
+		return (gids.size() / PAGE_SIZE); //Integer division ~ floor()
 	}
 
 	/**
