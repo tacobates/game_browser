@@ -91,7 +91,7 @@ public class RenderGame extends JPanel {
 			name.setText(game.getName());
 			nameY.setText(game.getName() + " " + yp);
 			numP.setText(np);
-			numPlayer.setText(np + " player  ");
+			numPlayer.setText(np + " player");
 			rating.setText(Double.toString(game.getRating()));
 			stars.setIcon(browser.makeStar(game.getRating()));
 			type.setText(game.getTypeName());

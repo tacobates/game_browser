@@ -2,7 +2,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -23,6 +22,8 @@ public class RenderBrowse extends RenderGame {
 	private Color cGray = new Color(230,230,230);
 	private Color cWhite = new Color(245,245,245);
 
+	private JPanel p1; //Items displayed in the row
+	private JPanel p2; //Items displayed in the row
 
 	/********* Methods *********/
 
@@ -46,7 +47,7 @@ public class RenderBrowse extends RenderGame {
 			public void mouseEntered(MouseEvent e) {
 				if (game.getName() == null)
 					return; //Do nothing for empty games
-				setBackground(cBlue);
+				mySetBackground(cBlue);
 				repaint();
 			}
 			@Override
@@ -62,28 +63,29 @@ public class RenderBrowse extends RenderGame {
 	*/
 	@Override
 	public void initLayout() {
-		setLayout(new GridLayout(1,2));
+		setLayout(new BorderLayout());
 		name.setFont(name.getFont().deriveFont(14.0f));
 		yearP.setFont(name.getFont().deriveFont(14.0f));
 
 		icon = new JLabel();
-		JPanel p1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		p1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		p1.add(icon);
 		p1.add(name);
 		p1.add(yearP);
 
-		JPanel p2 = new JPanel(new GridLayout(1,2, 0,0));
+		p2 = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15,0));
 		p2.add(typeG);
 		p2.add(numPlayer);
-		p2.setBorder(BorderFactory.createEmptyBorder(15,0,0,0)); //margin top
+		p2.setBorder(BorderFactory.createEmptyBorder(16,0,0,0)); //margin top
 
+		stars.setBorder(BorderFactory.createEmptyBorder(-8,0,0,18)); //margin R
 
 		JPanel p2wrap = new JPanel(new BorderLayout(0,0));
 		p2wrap.add(p2, BorderLayout.NORTH);
-		p2wrap.add(stars, BorderLayout.CENTER);
+		p2wrap.add(stars, BorderLayout.EAST);
 
-		add(p1);
-		add(p2wrap);
+		add(p1, BorderLayout.CENTER);
+		add(p2wrap, BorderLayout.EAST);
 	}
 
 	/**
@@ -121,7 +123,16 @@ public class RenderBrowse extends RenderGame {
 	* Sets the background color for this panel based on the row number
 	*/
 	public void defaultBackground() {
-		setBackground(row % 2 == 0 ? cWhite : cGray);
+		mySetBackground(row % 2 == 0 ? cWhite : cGray);
+	}
+
+	/**
+	* Sets the background for all the sub-components in my layout
+	*/
+	public void mySetBackground(Color c) {
+		for (int i = 0; i < getComponentCount(); i++)
+			getComponent(i).setBackground(c);
+		p2.setBackground(c);
 	}
 
 	public int launch() {
