@@ -46,16 +46,16 @@ public final class Meta {
 	public static final String FILT_RATE45 = "> 4.5";
 	public static final String HTML_A      = "<html><body>";
 	public static final String HTML_Z      = "</body></html>";
-	public static final String LABF_CONT          = "Contains:";
-	public static final String LABF_FAVE          = "Favorited:";
-	public static final String LABF_GENRE         = "Genre:";
-	public static final String LABF_INST          = "Installed:";
-	public static final String LABF_NUMP          = "Players:";
-	public static final String LABF_RATE          = "Rating:";
-	public static final String LABF_SORT          = "Sort by:";
-	public static final String LABF_TYPE          = "Type:";
-	public static final String LABF_YEAR1         = "Older than:";
-	public static final String LABF_YEAR2         = "Newer than:";
+	public static final String LABF_CONT   = "Contains:";
+	public static final String LABF_FAVE   = "Favorited:";
+	public static final String LABF_GENR   = "Genre:";
+	public static final String LABF_INST   = "Installed:";
+	public static final String LABF_NUMP   = "Players:";
+	public static final String LABF_RATE   = "Rating:";
+	public static final String LABF_SORT   = "Sort by:";
+	public static final String LABF_TYPE   = "Type:";
+	public static final String LABF_YEAR1  = "Older than:";
+	public static final String LABF_YEAR2  = "Newer than:";
 	public static final String LOG_ACC     = "/log/access.log";
 	public static final String LOG_ERR     = "/log/error.log";
 	public static final String LOG_INST    = "/log/install.log";
@@ -67,8 +67,11 @@ public final class Meta {
 	public static final String SORT_RATE1  = "Unpopular";
 	public static final String SORT_YEAR0  = "Oldest";
 	public static final String SORT_YEAR1  = "Newest";
-	public static final String TITLE       = "Game Browser";
+	public static final String TITLE1      = "Game Browser";
 	public static final String TITLE2      = "Game Details";
+	public static final String TITLE3      = "Search & Filter";
+	public static final String TITLE4      = "Sync Latest Data";
+	public static final String TITLE5      = "About";
 
 //TODO: get DIRs from user entered data, but assume these (even DIR)
 //TODO: allow for multiple directories to be entered
@@ -233,6 +236,46 @@ public final class Meta {
 	}
 
 //TODO: filter/sort method that returns # games that apply
+
+
+	/**
+	* Filter & Sort based on the parameter criteria
+	* @param sort: corresponds to SORT_* & LABF_SORT
+	* @param search: corresponds to LABF_CONT
+	* @param fave: corresponds to FILT_FAVE1 & LABF_FAVE
+	* @param inst: corresponds to FILT_INST1 & LABF_INST
+	* @param rate: corresponds to FILT_RATE* & LABF_RATE
+	* @param nump: corresponds to LABF_NUMP
+	* @param type: corresponds to LABF_TYPE
+	* @param genre: corresponds to LABF_GENRE
+	* @param y1: corresponds to LABF_YEAR1
+	* @param y2: corresponds to LABF_YEAR2
+	*/
+	public void filter(String sort, String search, String fave, String inst,
+		String rate, String nump, String type, String genre, String y1,
+		String y2) {
+
+		Set<Map.Entry<String,Integer>> entries;
+//TODO: figure out how to sort backward
+		switch (sort) {
+			case SORT_NAME0: case SORT_NAME1:
+				entries = sortedName.entrySet(); break;
+			case SORT_RATE0: case SORT_RATE1:
+				entries = sortedRate.entrySet(); break;
+			case SORT_YEAR0: case SORT_YEAR1:
+				entries = sortedYear.entrySet(); break;
+			default: return; //We cannot handle unexpected sorting
+		}
+
+		//Wipe out the currently filtered list
+		gids = new ArrayList<Integer>();
+
+		//Use that sorted list to loop through & check criteria
+		for(Map.Entry<String,Integer> entry : entries) {
+			int id = entry.getValue();
+gids.add(id);
+		}
+	}
 
 	/**
 	* Get Game IDs (TODO: with applied filters / sorting)

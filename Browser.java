@@ -108,7 +108,7 @@ public class Browser extends JFrame {
 		setResizable(true);
 		setSize(dSize);
 		setPreferredSize(dSize);
-		setTitle(meta.TITLE);
+		setTitle(meta.TITLE1);
 
 		initPanels();
 		initResizeListener();
@@ -214,8 +214,17 @@ public class Browser extends JFrame {
 			case 2:
 				setTitle(meta.TITLE2);
 				break;
+			case 3:
+				setTitle(meta.TITLE3);
+				break;
+			case 4:
+				setTitle(meta.TITLE4);
+				break;
+			case 5:
+				setTitle(meta.TITLE5);
+				break;
 			default:
-				setTitle(meta.TITLE);
+				setTitle(meta.TITLE1);
 				break;
 		}
 		CardLayout c = (CardLayout)(cards.getLayout());
@@ -245,28 +254,20 @@ int max = 3; //TODO: get real max
 	* Filters the list of games based on the criteria in the GUI elements
 	*/
 	private void filter() {
+		String sort = (String)cSort.getSelectedItem();
 		String search = tContains.getText();
 		String fave = (String)cFave.getSelectedItem();
-		String genre = (String)cGenre.getSelectedItem();
 		String inst = (String)cInst.getSelectedItem();
-		String nump = (String)cNumP.getSelectedItem();
 		String rate = (String)cRate.getSelectedItem();
-		String sort = (String)cSort.getSelectedItem();
+		String nump = (String)cNumP.getSelectedItem();
 		String type = (String)cType.getSelectedItem();
+		String genre = (String)cGenre.getSelectedItem();
 		String y1 = (String)cYear1.getSelectedItem();
 		String y2 = (String)cYear2.getSelectedItem();
-System.out.println("TODO: Trigger search with data:");
-System.out.println("-- search: " + search);
-System.out.println("-- fave: " + fave);
-System.out.println("-- genre: " + genre);
-System.out.println("-- inst: " + inst);
-System.out.println("-- nump: " + nump);
-System.out.println("-- rate: " + rate);
-System.out.println("-- sort: " + sort);
-System.out.println("-- type: " + type);
-System.out.println("-- y1: " + y1);
-System.out.println("-- y2: " + y2);
 
+		meta.filter(sort, search, fave, inst, rate, nump, type, genre, y1, y2);
+
+		page(0);
 		card(1);
 	}
 
@@ -450,7 +451,7 @@ cSort.addItem(meta.SORT_NAME1); //TODO: Delete. Just for POC (not useful)
 		mid.add(cType);
 		mid.add(new JLabel(""));
 
-		mid.add(new JLabel(meta.LABF_GENRE, JLabel.RIGHT));
+		mid.add(new JLabel(meta.LABF_GENR, JLabel.RIGHT));
 		mid.add(cGenre);
 		mid.add(new JLabel(""));
 
