@@ -305,9 +305,30 @@ public final class Meta {
 					continue; //Failed Match - Skip it
 			}
 
-			//do search last, as it's slowest & may be invalidated by others
+			//Check Type
+			if (FILT_ANY != type) {
+				if (type.compareToIgnoreCase(g.getTypeName()) != 0)
+					continue; //Failed Match - Skip it
+			}
+
+			//Check Genre
+			if (FILT_ANY != genre) {
+				if (genre.compareToIgnoreCase(g.getGenre()) != 0)
+					continue; //Failed Match - Skip it
+			}
+//TODO: when mapping types/genres, have the key be lowercase, and the Value be normal
+
+			//Check Year Start
+			//TODO:
+
+			//Check Year End
+			//TODO:
+
+			//Check Search String (slowest, but may be skipped by other criteria)
 			//TODO: use search
-gids.add(id);
+
+			//If we haven't hit a "continue" yet, then we've matched all criteria
+			gids.add(id);
 		}
 	}
 
