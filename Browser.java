@@ -36,6 +36,16 @@ public class Browser extends JFrame {
 	private Dimension dSize2; //Size of Body (minus header, borders)
 	private Dimension dSize3; //dSize2 - another header (pControl)
 
+	JComboBox<String> cFave;
+	JComboBox<String> cGenre;
+	JComboBox<String> cInst;
+	JComboBox<String> cNumP;
+	JComboBox<String> cRate;
+	JComboBox<String> cSort;
+	JComboBox<String> cType;
+	JComboBox<String> cYear1;
+	JComboBox<String> cYear2;
+
 	private JLabel iAbout;
 	private JLabel iHome;
 	private JLabel iSearch;
@@ -58,6 +68,7 @@ public class Browser extends JFrame {
 	private JScrollPane browseScroll;
 	private JScrollPane detailScroll;
 
+	private JTextField tContains;
 	private JTextField tPage;
 
 	private List<Game> games;
@@ -162,8 +173,6 @@ public class Browser extends JFrame {
 		//Details Pane
 		pDetail = new RenderDetail(this);
 
-//TODO: display pControls ABOVE browseScroll
-//TODO: add padding to shrink browseScroll
 		//Scroll Panes for each Card
 		browseScroll = new JScrollPane(pBrowse);
 		detailScroll = new JScrollPane(pDetail);
@@ -232,6 +241,37 @@ int max = 3; //TODO: get real max
 	private void pageDown() { page(currPage - 1); }
 //TODO: make key listeners that are actually bound to pageUp & pageDown???
 
+	/**
+	* Filters the list of games based on the criteria in the GUI elements
+	*/
+	private void filter() {
+		String search = tContains.getText();
+		String fave = (String)cFave.getSelectedItem();
+		String genre = (String)cGenre.getSelectedItem();
+		String inst = (String)cInst.getSelectedItem();
+		String nump = (String)cNumP.getSelectedItem();
+		String rate = (String)cRate.getSelectedItem();
+		String sort = (String)cSort.getSelectedItem();
+		String type = (String)cType.getSelectedItem();
+		String y1 = (String)cYear1.getSelectedItem();
+		String y2 = (String)cYear2.getSelectedItem();
+System.out.println("TODO: Trigger search with data:");
+System.out.println("-- search: " + search);
+System.out.println("-- fave: " + fave);
+System.out.println("-- genre: " + genre);
+System.out.println("-- inst: " + inst);
+System.out.println("-- nump: " + nump);
+System.out.println("-- rate: " + rate);
+System.out.println("-- sort: " + sort);
+System.out.println("-- type: " + type);
+System.out.println("-- y1: " + y1);
+System.out.println("-- y2: " + y2);
+
+		card(1);
+	}
+
+
+//TODO: cluster init* methods
 	/**
 	* Sets up the RenderGame elements for use & reuse
 	*/
@@ -320,14 +360,117 @@ System.out.println("TODO: JDialog to confirm, then card(4) to watch progress");
 	* Sets up the Search panel
 	*/
 	private void initSearch() {
+		pSearch = new JPanel(new BorderLayout());
 		JLabel home = makeIcon("/img/home.gif");
-		pSearch = new JPanel();
+		JButton bApply = new JButton("Apply Filters");
 
-JLabel temp = new JLabel("TODO: actually make a Search Pane");
+		cSort = new JComboBox<String>();
+		cSort.addItem(meta.SORT_NAME0);
+cSort.addItem(meta.SORT_NAME1); //TODO: Delete. Just for POC (not useful)
+		cSort.addItem(meta.SORT_YEAR0);
+		cSort.addItem(meta.SORT_YEAR1);
+		cSort.addItem(meta.SORT_RATE0);
+		cSort.addItem(meta.SORT_RATE1);
 
-		pSearch.add(home);
-		pSearch.add(temp);
+		tContains = new JTextField("");
 
+		cFave = new JComboBox<String>();
+		cFave.addItem(meta.FILT_ANY);
+		cFave.addItem(meta.FILT_FAVE1);
+
+		cInst = new JComboBox<String>();
+		cInst.addItem(meta.FILT_ANY);
+		cInst.addItem(meta.FILT_INST1);
+
+		cRate = new JComboBox<String>();
+		cRate.addItem(meta.FILT_ANY);
+		cRate.addItem(meta.FILT_RATE45);
+		cRate.addItem(meta.FILT_RATE4);
+		cRate.addItem(meta.FILT_RATE35);
+		cRate.addItem(meta.FILT_RATE3);
+		cRate.addItem(meta.FILT_RATE25);
+		cRate.addItem(meta.FILT_RATE2);
+
+		cNumP = new JComboBox<String>();
+		cNumP.addItem(meta.FILT_ANY);
+		for(Map.Entry<Integer,Boolean> entry : meta.mapPlayers.entrySet())
+			cNumP.addItem(Integer.toString(entry.getKey()) + " or more");
+
+		cType = new JComboBox<String>();
+		cType.addItem(meta.FILT_ANY);
+		for(Map.Entry<String,Boolean> entry : meta.mapTypes.entrySet())
+			cType.addItem(entry.getKey());
+
+		cGenre = new JComboBox<String>();
+		cGenre.addItem(meta.FILT_ANY);
+		for(Map.Entry<String,Boolean> entry : meta.mapGenres.entrySet())
+			cGenre.addItem(entry.getKey());
+
+		cYear1 = new JComboBox<String>();
+		cYear1.addItem(meta.FILT_ANY);
+		for(Map.Entry<Integer,Boolean> entry : meta.mapYears.entrySet())
+			cYear1.addItem(Integer.toString(entry.getKey()));
+
+		cYear2 = new JComboBox<String>();
+		cYear2.addItem(meta.FILT_ANY);
+		for(Map.Entry<Integer,Boolean> entry : meta.mapYears.entrySet())
+			cYear2.addItem(Integer.toString(entry.getKey()));
+
+		JPanel top = new JPanel(new BorderLayout());
+		top.add(home, BorderLayout.WEST);
+		top.add(bApply, BorderLayout.EAST);
+
+//TODO: get a better layout for mid
+		JPanel mid = new JPanel(new GridLayout(10,3, 1,1)); //3rd col for help?
+		mid.add(new JLabel(meta.LABF_SORT, JLabel.RIGHT));
+		mid.add(cSort);
+		mid.add(new JLabel(""));
+
+		mid.add(new JLabel(meta.LABF_CONT, JLabel.RIGHT));
+		mid.add(tContains);
+		mid.add(new JLabel("(leave blank to ignore)"));
+
+		mid.add(new JLabel(meta.LABF_FAVE, JLabel.RIGHT));
+		mid.add(cFave);
+		mid.add(new JLabel(""));
+
+		mid.add(new JLabel(meta.LABF_INST, JLabel.RIGHT));
+		mid.add(cInst);
+		mid.add(new JLabel(""));
+
+		mid.add(new JLabel(meta.LABF_RATE, JLabel.RIGHT));
+		mid.add(cRate);
+		mid.add(new JLabel(""));
+
+		mid.add(new JLabel(meta.LABF_NUMP, JLabel.RIGHT));
+		mid.add(cNumP);
+		mid.add(new JLabel(""));
+
+		mid.add(new JLabel(meta.LABF_TYPE, JLabel.RIGHT));
+		mid.add(cType);
+		mid.add(new JLabel(""));
+
+		mid.add(new JLabel(meta.LABF_GENRE, JLabel.RIGHT));
+		mid.add(cGenre);
+		mid.add(new JLabel(""));
+
+		mid.add(new JLabel(meta.LABF_YEAR1, JLabel.RIGHT));
+		mid.add(cYear1);
+		mid.add(new JLabel(""));
+
+		mid.add(new JLabel(meta.LABF_YEAR2, JLabel.RIGHT));
+		mid.add(cYear2);
+		mid.add(new JLabel(""));
+
+		pSearch.add(top, BorderLayout.NORTH);
+		pSearch.add(mid, BorderLayout.CENTER);
+
+		bApply.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				filter();
+			}
+		});
 		home.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) { card(1); }

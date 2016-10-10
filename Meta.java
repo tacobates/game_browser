@@ -35,13 +35,38 @@ public final class Meta {
 	public static final String DIR_SCREEN  = "/screen";
 	public static final String DIR_USER    = "/user";
 	public static final String FILE_ALL    = "/all.tsv";
+	public static final String FILT_ANY    = "Any";
+	public static final String FILT_FAVE1  = "Only Favorited";
+	public static final String FILT_INST1  = "Only Installed";
+	public static final String FILT_RATE2  = "> 2.0";
+	public static final String FILT_RATE25 = "> 2.5";
+	public static final String FILT_RATE3  = "> 3.0";
+	public static final String FILT_RATE35 = "> 3.5";
+	public static final String FILT_RATE4  = "> 4.0";
+	public static final String FILT_RATE45 = "> 4.5";
 	public static final String HTML_A      = "<html><body>";
 	public static final String HTML_Z      = "</body></html>";
+	public static final String LABF_CONT          = "Contains:";
+	public static final String LABF_FAVE          = "Favorited:";
+	public static final String LABF_GENRE         = "Genre:";
+	public static final String LABF_INST          = "Installed:";
+	public static final String LABF_NUMP          = "Players:";
+	public static final String LABF_RATE          = "Rating:";
+	public static final String LABF_SORT          = "Sort by:";
+	public static final String LABF_TYPE          = "Type:";
+	public static final String LABF_YEAR1         = "Older than:";
+	public static final String LABF_YEAR2         = "Newer than:";
 	public static final String LOG_ACC     = "/log/access.log";
 	public static final String LOG_ERR     = "/log/error.log";
 	public static final String LOG_INST    = "/log/install.log";
 	public static final String PAGE        = "Page ";
 	public static final String SEP         = "/";
+	public static final String SORT_NAME0  = "Name";
+	public static final String SORT_NAME1  = "Name Z-A";
+	public static final String SORT_RATE0  = "Popular";
+	public static final String SORT_RATE1  = "Unpopular";
+	public static final String SORT_YEAR0  = "Oldest";
+	public static final String SORT_YEAR1  = "Newest";
 	public static final String TITLE       = "Game Browser";
 	public static final String TITLE2      = "Game Details";
 
@@ -53,9 +78,13 @@ public final class Meta {
 	private static ArrayList<Integer> gidsAll; //Has ALL Game IDs
 
 	private static HashMap<Integer, Game> mapGames; //Stores all our Games
-	private static TreeMap<String, Integer> sortedName;
-	private static TreeMap<String, Integer> sortedRate; //Rate Desc + Name +ID
-	private static TreeMap<String, Integer> sortedYear; //Year + Name + ID
+	protected static TreeMap<String,  Boolean> mapGenres;
+	protected static TreeMap<Integer, Boolean> mapPlayers;
+	protected static TreeMap<String,  Boolean> mapTypes;
+	protected static TreeMap<Integer, Boolean> mapYears;
+	private static TreeMap<String,  Integer> sortedName;
+	private static TreeMap<String,  Integer> sortedRate; //Rate Desc + Name +ID
+	private static TreeMap<String,  Integer> sortedYear; //Year + Name + ID
 
 	private static String dirRoot = "/usr/local/game_meta";
 	private static String dirBash = "/usr/share/games/bash";
@@ -123,6 +152,10 @@ public final class Meta {
 		sortedName = new TreeMap<String, Integer>();
 		sortedRate = new TreeMap<String, Integer>();
 		sortedYear = new TreeMap<String, Integer>();
+		mapGenres = new TreeMap<String, Boolean>();
+		mapPlayers = new TreeMap<Integer, Boolean>();
+		mapTypes = new TreeMap<String, Boolean>();
+		mapYears = new TreeMap<Integer, Boolean>();
 		String path = dirRoot + FILE_ALL;
 		try(BufferedReader br = new BufferedReader(new FileReader(path))){
 			String line = br.readLine();
@@ -138,6 +171,10 @@ public final class Meta {
 					sortedRate.put(r+n, id);
 					sortedYear.put(y+n, id);
 					gidsAll.add(id);
+					mapGenres.put(g.getGenre(), true);
+					mapPlayers.put(g.getNumPlayers(), true);
+					mapTypes.put(g.getTypeName(), true);
+					mapYears.put(g.getYear(), true);
 				}
 				line = br.readLine();
 			}
