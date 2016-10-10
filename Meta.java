@@ -54,8 +54,8 @@ public final class Meta {
 	public static final String LABF_RATE   = "Rating:";
 	public static final String LABF_SORT   = "Sort by:";
 	public static final String LABF_TYPE   = "Type:";
-	public static final String LABF_YEAR1  = "Older than:";
-	public static final String LABF_YEAR2  = "Newer than:";
+	public static final String LABF_YEAR1  = "Newer than:";
+	public static final String LABF_YEAR2  = "Older than:";
 	public static final String LOG_ACC     = "/log/access.log";
 	public static final String LOG_ERR     = "/log/error.log";
 	public static final String LOG_INST    = "/log/install.log";
@@ -316,13 +316,20 @@ public final class Meta {
 				if (genre.compareToIgnoreCase(g.getGenre()) != 0)
 					continue; //Failed Match - Skip it
 			}
-//TODO: when mapping types/genres, have the key be lowercase, and the Value be normal
 
 			//Check Year Start
-			//TODO:
+			if (FILT_ANY != y1) {
+				int y = Integer.parseInt(y1);
+				if (g.getYear() < y)
+					continue; //Failed Match - Skip it
+			}
 
 			//Check Year End
-			//TODO:
+			if (FILT_ANY != y2) {
+				int y = Integer.parseInt(y2);
+				if (g.getYear() > y)
+					continue; //Failed Match - Skip it
+			}
 
 			//Check Search String (slowest, but may be skipped by other criteria)
 			//TODO: use search
