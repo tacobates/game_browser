@@ -13,11 +13,17 @@ public class GameNes extends Game {
 
 	public long launch() {
 		long pid = -1;
+		String gg = "";
+		if (true) //TODO: check flag for Game Genie
+			gg = "-gg 1 ";
 
-		String path = filePath();
-//TODO: check that fceux is installed
-		String cmd = "fceux \"" + path + "\"";
-System.out.println(cmd);
+		//TODO: check that fceux is installed
+		//TODO: if not "sudo apt-get install fceux"
+
+		//Options: www.fceux.com/web/help/fceux.html?CommandLineOptions.html
+		String path = "\"" + filePath() + "\"";
+		String cmd = "fceux " + gg + path;
+//System.out.println(cmd);
 
 		try {
 			Runtime rt = Runtime.getRuntime();
