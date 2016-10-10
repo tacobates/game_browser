@@ -103,7 +103,10 @@ public class RenderDetail extends RenderGame {
 			public void mouseExited(MouseEvent e) {play.setEnabled(true);}
 			public void mouseClicked(MouseEvent e) {
 				play.setEnabled(false);
-				game.launch();
+				if (game.isInstalled())
+					game.launch();
+				else
+					game.install();
 			}
 		});
 		screenNext.addMouseListener(new MouseAdapter() {
@@ -176,6 +179,11 @@ public class RenderDetail extends RenderGame {
 	*/
 	@Override
 	public void refreshGUI() {
+		String playOrInst = "Install";
+		if (game.isInstalled())
+			playOrInst = "Play";
+		play.setText(playOrInst);
+
 		parseDetail(); //get Descrip & Conf
 		screen(0); //Show the first Screenshot
 		super.refreshGUI(); //at end to trigger repaint when done

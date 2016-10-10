@@ -247,6 +247,8 @@ public final class Meta {
 		g.setGenre(x[I_GENRE]);
 		if (x.length > I_FILE)
 			g.setFile(x[I_FILE]);
+		else
+			g.setFile("");
 		return g;
 	}
 

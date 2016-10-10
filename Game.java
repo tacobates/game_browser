@@ -153,6 +153,25 @@ public class Game {
 //TODO: allow for filtering by type, rating, etc...
 
 
+	public boolean isInstalled() {
+		EZFile ez = EZFile.getInstance();
+		if (ez.pathExists(filePath()))
+			return true;
+		return false;
+	}
+
+	public String filePath() {
+		if (null == file)
+			return "";
+		if (file.startsWith("/"))
+			return file;
+		return dir + meta.SEP + file;
+	}
+
+	public void install() {
+		System.out.println("Installation unknown for this game type.");
+	}
+
 	public long launch() {
 		System.out.println("This type of game is not yet supported.");
 		return -1; //TODO: get and return the PID so we can track run time?

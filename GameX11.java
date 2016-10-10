@@ -14,10 +14,7 @@ public class GameX11 extends Game {
 	public long launch() {
 		long pid = -1;
 
-		String path = getFile();
-		//Add default directory
-		if (!path.startsWith("/"))
-			path = dir + meta.SEP + path;
+		String path = filePath();
 
 		try {
 			Runtime rt = Runtime.getRuntime();
