@@ -86,8 +86,11 @@ public final class Meta {
 	protected static TreeMap<String,  Boolean> mapTypes;
 	protected static TreeMap<Integer, Boolean> mapYears;
 	private static TreeMap<String,  Integer> sortedName;
-	private static TreeMap<String,  Integer> sortedRate; //Rate Desc + Name +ID
+	private static TreeMap<String,  Integer> sortedName2;//Desc
+	private static TreeMap<String,  Integer> sortedRate; //Rate Asc + Name +ID
+	private static TreeMap<String,  Integer> sortedRate2;//Desc
 	private static TreeMap<String,  Integer> sortedYear; //Year + Name + ID
+	private static TreeMap<String,  Integer> sortedYear2;//Desc
 
 	private static String dirRoot = "/usr/local/game_meta";
 	private static String dirBash = "/usr/share/games/bash";
@@ -153,8 +156,11 @@ public final class Meta {
 		gidsAll = new ArrayList();
 		mapGames = new HashMap<Integer, Game>();
 		sortedName = new TreeMap<String, Integer>();
+		sortedName2 = new TreeMap<String, Integer>(Collections.reverseOrder());
 		sortedRate = new TreeMap<String, Integer>();
+		sortedRate2 = new TreeMap<String, Integer>(Collections.reverseOrder());
 		sortedYear = new TreeMap<String, Integer>();
+		sortedYear2 = new TreeMap<String, Integer>(Collections.reverseOrder());
 		mapGenres = new TreeMap<String, Boolean>();
 		mapPlayers = new TreeMap<Integer, Boolean>();
 		mapTypes = new TreeMap<String, Boolean>();
@@ -171,8 +177,11 @@ public final class Meta {
 					String r = String.format("%.2f", g.getRating());
 					mapGames.put(id, g);
 					sortedName.put(n, id);
+					sortedName2.put(n, id);
 					sortedRate.put(r+n, id);
+					sortedRate2.put(r+n, id);
 					sortedYear.put(y+n, id);
+					sortedYear2.put(y+n, id);
 					gidsAll.add(id);
 					mapGenres.put(g.getGenre(), true);
 					mapPlayers.put(g.getNumPlayers(), true);
@@ -182,7 +191,7 @@ public final class Meta {
 				line = br.readLine();
 			}
 
-//TODO: move to function for resorting
+//TODO: do below by calling filter() with right params
 //TODO: sort by whatever was sorted last time
 			//Default gids to Name Sorted list
 			for(Map.Entry<String,Integer> entry : sortedName.entrySet())
@@ -258,12 +267,12 @@ public final class Meta {
 		Set<Map.Entry<String,Integer>> entries;
 //TODO: figure out how to sort backward
 		switch (sort) {
-			case SORT_NAME0: case SORT_NAME1:
-				entries = sortedName.entrySet(); break;
-			case SORT_RATE0: case SORT_RATE1:
-				entries = sortedRate.entrySet(); break;
-			case SORT_YEAR0: case SORT_YEAR1:
-				entries = sortedYear.entrySet(); break;
+			case SORT_NAME0: entries = sortedName.entrySet(); break;
+			case SORT_NAME1: entries = sortedName2.entrySet(); break;
+			case SORT_RATE0: entries = sortedRate2.entrySet(); break;
+			case SORT_RATE1: entries = sortedRate.entrySet(); break;
+			case SORT_YEAR0: entries = sortedYear.entrySet(); break;
+			case SORT_YEAR1: entries = sortedYear2.entrySet(); break;
 			default: return; //We cannot handle unexpected sorting
 		}
 
