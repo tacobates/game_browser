@@ -81,9 +81,9 @@ public final class Meta {
 	private static ArrayList<Integer> gidsAll; //Has ALL Game IDs
 
 	private static HashMap<Integer, Game> mapGames; //Stores all our Games
-	protected static TreeMap<String,  Boolean> mapGenres;
+	protected static TreeMap<String,  String> mapGenres;
 	protected static TreeMap<Integer, Boolean> mapPlayers;
-	protected static TreeMap<String,  Boolean> mapTypes;
+	protected static TreeMap<String,  String> mapTypes;
 	protected static TreeMap<Integer, Boolean> mapYears;
 	private static TreeMap<String,  Integer> sortedName;
 	private static TreeMap<String,  Integer> sortedName2;//Desc
@@ -161,9 +161,9 @@ public final class Meta {
 		sortedRate2 = new TreeMap<String, Integer>(Collections.reverseOrder());
 		sortedYear = new TreeMap<String, Integer>();
 		sortedYear2 = new TreeMap<String, Integer>(Collections.reverseOrder());
-		mapGenres = new TreeMap<String, Boolean>();
+		mapGenres = new TreeMap<String, String>();
 		mapPlayers = new TreeMap<Integer, Boolean>();
-		mapTypes = new TreeMap<String, Boolean>();
+		mapTypes = new TreeMap<String, String>();
 		mapYears = new TreeMap<Integer, Boolean>();
 		String path = dirRoot + FILE_ALL;
 		try(BufferedReader br = new BufferedReader(new FileReader(path))){
@@ -183,9 +183,9 @@ public final class Meta {
 					sortedYear.put(y+n, id);
 					sortedYear2.put(y+n, id);
 					gidsAll.add(id);
-					mapGenres.put(g.getGenre(), true);
+					mapGenres.put(g.getGenre().toLowerCase(), g.getGenre());
 					mapPlayers.put(g.getNumPlayers(), true);
-					mapTypes.put(g.getTypeName(), true);
+					mapTypes.put(g.getTypeName().toLowerCase(), g.getTypeName());
 					mapYears.put(g.getYear(), true);
 				}
 				line = br.readLine();

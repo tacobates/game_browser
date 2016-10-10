@@ -399,13 +399,13 @@ cSort.addItem(meta.SORT_NAME1); //TODO: Delete. Just for POC (not useful)
 
 		cType = new JComboBox<String>();
 		cType.addItem(meta.FILT_ANY);
-		for(Map.Entry<String,Boolean> entry : meta.mapTypes.entrySet())
-			cType.addItem(entry.getKey());
+		for(Map.Entry<String,String> entry : meta.mapTypes.entrySet())
+			cType.addItem(entry.getValue());
 
 		cGenre = new JComboBox<String>();
 		cGenre.addItem(meta.FILT_ANY);
-		for(Map.Entry<String,Boolean> entry : meta.mapGenres.entrySet())
-			cGenre.addItem(entry.getKey());
+		for(Map.Entry<String,String> entry : meta.mapGenres.entrySet())
+			cGenre.addItem(entry.getValue());
 
 		cYear1 = new JComboBox<String>();
 		cYear1.addItem(meta.FILT_ANY);
