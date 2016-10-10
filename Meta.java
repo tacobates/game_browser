@@ -332,7 +332,10 @@ public final class Meta {
 			}
 
 			//Check Search String (slowest, but may be skipped by other criteria)
-			//TODO: use search
+			if (search.length() > 0) {
+				if (-1 == g.getName().toLowerCase().indexOf(search.toLowerCase()))
+					continue; //Failed Match - Skip it
+			}
 
 			//If we haven't hit a "continue" yet, then we've matched all criteria
 			gids.add(id);
