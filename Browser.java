@@ -502,13 +502,19 @@ JLabel temp = new JLabel("TODO: actually make a Sync Pane");
 	* Sets up the About panel
 	*/
 	private void initAbout() {
+		EZFile ez = EZFile.getInstance();
+		String p = this.getClass().getResource("/about.html").getPath();
+		String html = ez.readFile(p);
+//TODO: will ez.readFile work in JAR?
+		pAbout = new JPanel(new BorderLayout());
 		JLabel home = makeIcon("/img/home.gif");
-		pAbout = new JPanel();
+		JLabel body = new JLabel(html);
 
-JLabel temp = new JLabel("TODO: actually make an About Pane");
+		JPanel top = new JPanel(new BorderLayout());
+		top.add(home, BorderLayout.WEST);
 
-		pAbout.add(home);
-		pAbout.add(temp);
+		pAbout.add(top, BorderLayout.NORTH);
+		pAbout.add(body, BorderLayout.CENTER);
 
 		home.addMouseListener(new MouseAdapter() {
 			@Override
