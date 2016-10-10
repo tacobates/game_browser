@@ -175,6 +175,8 @@ public class Browser extends JFrame {
 
 		//Scroll Panes for each Card
 		browseScroll = new JScrollPane(pBrowse);
+		browseScroll.getVerticalScrollBar().setUnitIncrement(16);
+//TODO: do the same for detailScroll?
 		detailScroll = new JScrollPane(pDetail);
 		detailScroll.setBorder(BorderFactory.createEmptyBorder());
 
