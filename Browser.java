@@ -503,7 +503,7 @@ JLabel temp = new JLabel("TODO: actually make a Sync Pane");
 	*/
 	private void initAbout() {
 		EZFile ez = EZFile.getInstance();
-		String p = this.getClass().getResource("/about.html").getPath();
+		String p = this.getClass().getResource("/templates/about.html").getPath();
 		String html = ez.readFile(p);
 //TODO: will ez.readFile work in JAR?
 		pAbout = new JPanel(new BorderLayout());
