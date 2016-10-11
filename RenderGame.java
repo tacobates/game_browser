@@ -1,4 +1,4 @@
-
+import java.awt.Dimension;
 import java.awt.Image;
 import javax.swing.*;
 
@@ -69,6 +69,8 @@ public class RenderGame extends JPanel {
 	* Refreshes the GUI elements to display current Game data
 	*/
 	public void refreshGUI() {
+		descrip.setSize(new Dimension(300,90));
+		descrip.setPreferredSize(new Dimension(300,90));
 		if (game.getName() == null){
 			descrip.setText("");
 			genre.setText("");
