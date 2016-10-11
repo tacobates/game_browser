@@ -27,8 +27,7 @@ public class GameDos extends Game {
 			//zip.substring(0, zip.length() - 4);
 			//Can't use zipName as DOS can only handle 8 char names
 
-//zipName = "carmen_europe"; //TODO: delete this test line
-String LAUNCHER = "carmen.exe"; //TODO: get these from config
+		String exe = ez.readFile(meta.getDirConf() + "/" + zipName + ".conf");
 
 //TODO: write any special config (like slowdown for bcw)
 		//Write conf file
@@ -37,7 +36,7 @@ String LAUNCHER = "carmen.exe"; //TODO: get these from config
 			"c:\n" +
 			"cd _inst\n" + 
 			"cd " + zipName + "\n" +
-			LAUNCHER + "\n";
+			exe + "\n";
 		boolean written = ez.writeFile(template, conf);
 		if (!written) {
 			System.out.println("Couldn't write Dosbox conf file: " + conf);
