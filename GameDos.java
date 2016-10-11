@@ -14,7 +14,8 @@ public class GameDos extends Game {
 	public long launch() {
 		long pid = -1;
 		EZFile ez = EZFile.getInstance();
-		String cmd = "";
+		String cmd1 = "";
+		String cmd2 = "";
 		String conf = dir + "/_conf/temp.conf";
 		String path = filePath();
 		String epath = "\"" + path + "\"";
@@ -50,15 +51,21 @@ String LAUNCHER = "carmen.exe"; //TODO: get these from config
 		String dest = dir + "/_inst/" + zipName;
 		String edest = "\"" + dir + "/_inst/" + zipName + "\""; //escaped
 		if (!ez.pathExists(dest))
-			cmd = "unzip " + epath + " -d " + edest + " && ";
+			cmd1 = "unzip " + epath + " -d " + edest;
 
 		//Options: dosbox.com/wiki/usage#Command_Line_Parameters
-		cmd += "dosbox -fullscreen -conf " + conf;
-System.out.println(cmd);
+		cmd2 = "dosbox -fullscreen -conf " + conf;
 
 		try {
 			Runtime rt = Runtime.getRuntime();
-			String[] cmdArray = {"lxterminal", "-e", cmd};
+			//Run unzip first
+			if (cmd1.length() > 0) {
+				String[] cmd1Array = {"lxterminal", "-e", cmd1};
+				rt.exec(cmd1Array).waitFor();
+			}
+
+			//Now launch dosbox
+			String[] cmdArray = {"lxterminal", "-e", cmd2};
 			Process p = rt.exec(cmdArray);
 
 			if (p.getClass().getName().equals("java.lang.UNIXProcess")) {
